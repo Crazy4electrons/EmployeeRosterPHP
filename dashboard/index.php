@@ -20,18 +20,15 @@
     <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
-
-
-
-
 <?php
 require "./headers/Mheader.html";
 // include "nav";
-if (isset($_COOKIE['username']) && !empty($_COOKIE)) {
+if ($_GET['login'] === true) {
     echo "Welcome back, " . $_COOKIE['username'] . "!";
-    include "./Body/main.php";
-}else{
+    include "./Body/main.php/?username=".$_COOKIE['username'];
+}else if($_GET['register']===true){
+}
+    else{
     echo "<p>Cookie not set.</p>";
     include "./body/Login.html";
 }

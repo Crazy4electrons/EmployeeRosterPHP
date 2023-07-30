@@ -2,76 +2,129 @@
 
 class DBaccess
 {
-    private $Hostname;
-    public $Username;
-    protected $Password;
-    private $Database;
-    public $DBConnect;
+    protected $Hostname = 'localhost';
+    public $Ausername = 'UAGAdmin';
+    protected $Apassword = 'sFhgbUnua7IaNG7u';
+    private $Database = "employee_rosters";
+    public $DBconnect;
+    public $username;
+    protected $passuser;
 
-    public function __construct()
+    public function __construct($username, $passuser, $adduser = 0)
     {
-        if(isset($_COOKIE['AHostname'],$_COOKIE['AUsername'],$_COOKIE['ADatabase'],$_COOKIE['AHashedPassword']) && !empty($_COOKIE)){
-            $this->Hostname = $_COOKIE['AHostname'];
-            $this->Username = $_COOKIE['AUsername'];
-            $this->Database = $_COOKIE['ADatabase'];
-            $this->Password = $_COOKIE['AHashedPassword'];  
-        }elseif (isset($_POST['Username'],$_POST['Database'],$_POST['Password'],$_POST['Hostname']) && !empty($_POST)) {
-            $this->Hostname = $_POST['AHostname'];
-            $this->Username = $_POST['AUsername'];
-            $this->Database = $_POST['ADatabase'];
-            $this->Password = $_POST['APassword'];  
-            setcookie("AHostname", $this->Hostname, time()+((3600*24)*365), "/Admin/", "example.com", 1);
-        }else{
-            header('Location: '.$_SERVER['HTTP_HOST'].'/EmployeeRosterPHP/dashboard/DatabaseFunctions/chkdb.html');
-            exit;
-        }
-        $this->initialize($this->Hostname, $this->Username, $this->Password, $this->Database);
+        $this->username = $username;
+        $this->passuser = $passuser;
+        $this->initialize($username, $passuser, $adduser);
     }
-
-
-
-    protected function initialize()
+    protected function initialize($username, $password, $adduser=0)
     {
         try {
-            $this->DBConnect = new PDO("mysql:host=$Hostname;dbname=$Database", $Username, $Password, array(PDO::ATTR_PERSISTENT => true));
+            $this->DBConnect = new PDO("mysql:host=$this->Hostname;dbname=$this->Database", $this->Ausername, $this->Apassword, array(PDO::ATTR_PERSISTENT => true));
             // set the PDO error mode to exception
             $this->DBConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             echo "<p>Connected successfully</p>";
         } catch(PDOException $eror) {
             echo "Connection failed: " . $eror->getMessage();
         }
-        $userATable = "CREATE TABLE IF NOT EXISTS ".strtolower($this->Database).
-            ".UserAdmins(username TEXT NOT NULL,
+        $userATable = "CREATE TABLE IF NOT EXISTS :Database.useradmins
+            (username TEXT NOT NULL,
             password TEXT NOT NULL,
             UNIQUE (username)
             ) ENGINE= InnoDB";
+        $SendDB = $this->DBconnect->prepare($userATable);
+        $SendDB->bindvalue(':Database', $this->Database);
         try {
-            $SendDB = $this->DBConnect->prepare($userATable);
             $SendDB->execute();
         } catch(PDOException $eror) {
             echo $eror;
         }
-        return $this->DBConnect;
-    }
-    
+        $SendDB->close();
 
-
-    protected function GetPass(string $password,bool $ChkOrHash = True){
-        if ($ChkOrHash) {
-            $Phash=password_hash("test",PASSWORD_BCRYPT,['cost' => 10]);
-            return $Phash;
-            
-        }else{
-            password_verify($password);
+        if($adduser === 1) {
+            $this->createUser($username, $password);
+        } elseif($this->authenticateUser($username, $password)) {
+            return $this->DBConnect;
+        } else {
+            header("Location: ".$_SERVER['HTTP_HOST']."/dashboard/index.php/?login=false");
+            exit;
         }
     }
-    public function Adduser(string $username, string $Password = GetPass($_POST['password'])){
-        $adduser = "INSERT INTO IF NOT EXISTS useradmins (username,password) VALUES ($username,$password
+
+    public function authenticateUser(string $username, string $password)
+    {
+        if ($this->userExists($username)) {
+            $storedPassword = $this->getUsersPassword($username);
+            if (password_verify($password, $storedPassword)) {
+                $authenticated = true;
+            } else {
+                $authenticated = false;
+            }
+        } else {
+            $authenticated = false;
+        }
+        return $authenticated;
     }
+
+    protected function userExists(string $username)
+    {
+        $sql = "SELECT COUNT(*) AS count
+        FROM user
+        WHERE username = :username";
+        $SendDB = $this->DBconnect->prepare($sql);
+        $SendDB->bindValue(':username', $username);
+        try {
+            $result = $SendDB->execute();
+        } catch(PDOException $eror) {
+            echo $eror;
+        }
+        $row = $result->fetchArray();
+        $exists = ($row['count'] === 1) ? true : false;
+        $SendDB->close();
+        return $exists;
+    }
+    protected function getUsersPassword($username)
+    {
+        $sql = 'SELECT password
+            FROM user
+            WHERE username = :username';
+        $SendDB = $this->DBconnect->prepare($sql);
+        $SendDB->bindValue(':username', $username);
+        try {
+            $result = $SendDB->execute();
+        } catch(PDOException $eror) {
+            echo $eror;
+        }
+        $row = $result->fetchArray();
+        $password = $row['password'];
+        $SendDB->close();
+        return $password;
+    }
+
+    public function createUser($username, $password)
+    {
+        $sql = 'INSERT INTO user
+        VALUES (:username, :password)';
+        $options = array('cost' => 10);
+        $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
+        $sendDB = $this->DBconnect->prepare($sql);
+        $sendDB->bindValue(':username', $username);
+        $sendDB->bindValue(':password', $derivedPassword);
+        try {
+            $sendDB->execute();
+        } catch (PDOException $eror) {
+            echo $eror;
+        }
+        $sendDB->close();
+    }
+
+
+
+
+
+
+
     public function printDB()
     {
         print_r($this->DBConnect);
     }
 }
-$aDBF = new DBaccess($_POST['hostname'], $_POST['username'], $_POST['password'], $_POST['database']);
-$aDBF->printDB();
