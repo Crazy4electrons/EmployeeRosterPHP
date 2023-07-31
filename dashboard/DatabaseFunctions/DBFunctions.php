@@ -1,5 +1,4 @@
 <?php
-
 class DBaccess
 {
     protected $Hostname = 'localhost';
@@ -8,51 +7,47 @@ class DBaccess
     private $Database = "employee_rosters";
     public $DBconnect;
     public $username;
-    protected $passuser;
 
-    public function __construct($username, $passuser, $adduser = 0)
+    public function __construct($username, $passuser, $adduser = false)
     {
         $this->username = $username;
-        $this->passuser = $passuser;
         $this->initialize($username, $passuser, $adduser);
     }
-    protected function initialize($username, $password, $adduser=0)
-    {
+    protected function initialize(string $username,string $password, bool $adduser=false){
         try {
-            $this->DBConnect = new PDO("mysql:host=$this->Hostname;dbname=$this->Database", $this->Ausername, $this->Apassword, array(PDO::ATTR_PERSISTENT => true));
+            $this->DBConnect = new PDO("mysql:host=$this->Hostname;dbname=$this->Database;charset=utf8", $this->Ausername, $this->Apassword, array(PDO::ATTR_PERSISTENT => true));
             // set the PDO error mode to exception
             $this->DBConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             echo "<p>Connected successfully</p>";
         } catch(PDOException $eror) {
             echo "Connection failed: " . $eror->getMessage();
         }
-        $userATable = "CREATE TABLE IF NOT EXISTS :Database.useradmins
+        $userATable = "CREATE TABLE IF NOT EXISTS :accessDB.useradmins
             (username TEXT NOT NULL,
             password TEXT NOT NULL,
             UNIQUE (username)
             ) ENGINE= InnoDB";
-        $SendDB = $this->DBconnect->prepare($userATable);
-        $SendDB->bindvalue(':Database', $this->Database);
+        $SendDB = $this->DBConnect->prepare($userATable);
+        $SendDB->bindvalue(':accessDB', $this->Database);
         try {
             $SendDB->execute();
         } catch(PDOException $eror) {
             echo $eror;
         }
-        $SendDB->close();
+        $SendDB=null;
 
-        if($adduser === 1) {
+        if($adduser === true) {
             $this->createUser($username, $password);
-        } elseif($this->authenticateUser($username, $password)) {
+        } elseif($this->authenticateUser($this->username, $password)) {
             return $this->DBConnect;
         } else {
             header("Location: ".$_SERVER['HTTP_HOST']."/dashboard/index.php/?login=false");
             exit;
         }
     }
-
     public function authenticateUser(string $username, string $password)
     {
-        if ($this->userExists($username)) {
+        if($this->userExists($username)) {
             $storedPassword = $this->getUsersPassword($username);
             if (password_verify($password, $storedPassword)) {
                 $authenticated = true;
@@ -73,11 +68,11 @@ class DBaccess
         $SendDB = $this->DBconnect->prepare($sql);
         $SendDB->bindValue(':username', $username);
         try {
-            $result = $SendDB->execute();
+            $SendDB->execute();
         } catch(PDOException $eror) {
             echo $eror;
         }
-        $row = $result->fetchArray();
+        $row = $SendDB->fetchArray(PDO::FETCH_ASSOC);
         $exists = ($row['count'] === 1) ? true : false;
         $SendDB->close();
         return $exists;
@@ -90,13 +85,13 @@ class DBaccess
         $SendDB = $this->DBconnect->prepare($sql);
         $SendDB->bindValue(':username', $username);
         try {
-            $result = $SendDB->execute();
+            $SendDB->execute();
         } catch(PDOException $eror) {
             echo $eror;
         }
-        $row = $result->fetchArray();
+        $row = $SendDB->fetchArray(PDO::FETCH_ASSOC);
         $password = $row['password'];
-        $SendDB->close();
+        $SendDB=null;
         return $password;
     }
 
@@ -114,14 +109,9 @@ class DBaccess
         } catch (PDOException $eror) {
             echo $eror;
         }
-        $sendDB->close();
+        $sendDB->null;
+        return $this->DBConnect;
     }
-
-
-
-
-
-
 
     public function printDB()
     {

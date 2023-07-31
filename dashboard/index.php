@@ -13,7 +13,7 @@
         </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="./CssFiles/MCss.css">
+        <link rel="stylesheet" href="../CssFiles/MCss.css">
         <link href="./images/favicon.ico" rel="icon" type="image/png" />
     </head>
     <body>
@@ -23,15 +23,16 @@
 <?php
 require "./headers/Mheader.html";
 // include "nav";
-if ($_GET['login'] === true) {
-    echo "Welcome back, " . $_COOKIE['username'] . "!";
-    include "./Body/main.php/?username=".$_COOKIE['username'];
-}else if($_GET['register']===true){
+if(isset($GET['register']) && !empty($GET['register']) && ($_GET['register']===true)){
+    require "./Body/Login.php";
+}else if(isset($_COOKIE['username'],$_COOKIE['Hpassword']) && !empty($_COOKIE)) {
+    require "./Body/Main.php";
+}else{
+    require "./Body/login.php";
 }
-    else{
-    echo "<p>Cookie not set.</p>";
-    include "./body/Login.html";
-}
+
+
+
 require "./Footer/MainFooter.html";
 ?>
     <script src="" async defer></script>
