@@ -32,7 +32,7 @@ class DB extends SQLite3
 /**
 * Creates the table if it does not exist already.
 */
-protected function initialize() 
+protected function initialize(){ 
     $sql = 'CREATE TABLE IF NOT EXISTS user (
         username STRING UNIQUE NOT NULL,
         password STRING NOT NULL
@@ -46,7 +46,7 @@ protected function initialize()
     * @param $username The username to authenticate.
     * @param $password The password to authenticate the user.
     * @return True if the password matches for the username, false if not.
-    */
+    */}
     public function authenticateUser($username, $password) {
     if ($this->userExists($username)) {
     $storedPassword = $this->getUsersPassword($username);
@@ -57,6 +57,7 @@ protected function initialize()
     }
     return $authenticated;
     }
+}
     /**
     * Checks if the given users exists in the database.
     *
@@ -81,9 +82,9 @@ protected function userExists($username) {
 * @return The password of the given user.
 */
 protected function getUsersPassword($username) {
-    $sql = ’SELECT password
+    $sql = 'SELECT password
     FROM user
-    WHERE username = :username’;
+    WHERE username = :username';
     $statement = $this->prepare($sql);
     $statement->bindValue(’:username’, $username);
     $result = $statement->execute();
