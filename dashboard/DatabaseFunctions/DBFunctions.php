@@ -9,7 +9,7 @@ class DBaccess
     public $DBConnect;
     public $username;
 
-    public function __construct($username, $passuser, $adduser = false)
+    public function __construct(string $username,string $passuser,bool $adduser = false)
     {
         $this->username = $username;
         $this->initialize($username, $passuser, $adduser);
@@ -24,20 +24,20 @@ class DBaccess
         } catch (PDOException $eror) {
             echo "Connection failed: " . $eror->getMessage();
         }
-        $userATable = "CREATE TABLE IF NOT EXISTS ':accessDB' . :tablename
-            ( username TEXT NOT NULL,
-            password TEXT NOT NULL,
-            UNIQUE (username)
-            ) ENGINE= InnoDB";
-        $SendDB = $this->DBConnect->prepare($userATable);
-        $SendDB->bindValue(':accessDB', $this->Database);
-        $SendDB->bindValue(':tablename', $this->tableName);
+        $sql = "CREATE TABLE IF NOT EXISTS '?'
+        (ID INT NOT NULL AUTO_INCREMENT,
+         username TEXT NOT NULL,
+         password TEXT NOT NULL,
+         PRIMARY KEY (ID)
+        )ENGINE=InnoDB;";
+        $SendDB = $this->DBConnect->prepare($sql);
+        $SendDB->bindParam(1, $this->tableName,PDO::PARAM_STR);
         try {
             $SendDB->execute();
         } catch (PDOException $eror) {
-            echo $eror;
+            print_r("$eror");
         }
-        $SendDB = null;
+        $SendDB=null;
 
         if ($adduser === true) {
             $this->createUser($username, $password);
@@ -65,12 +65,13 @@ class DBaccess
 
     protected function userExists(string $username)
     {
-        $sql = "SELECT COUNT(*) AS count
-        FROM :tablename
-        WHERE username = :username";
-        $SendDB = $this->DBConnect->prepare($sql);
-        $SendDB->bindValue(':tablename', $this->tableName);
-        $SendDB->bindValue(':username', $username);
+        $sql = "SELECT COUNT(*) AS 'count'
+        FROM ?
+        WHERE 'username' = '?';";
+        $sendDBQ = $this->DBConnect->quote($sql);
+        $SendDB = $this->DBConnect->prepare($sendDBQ);
+        $SendDB->bindParam(1, $this->tableName,PDO::PARAM_STR);
+        $SendDB->bindParam(2, $username,PDO::PARAM_STR);
         try {
             $SendDB->execute();
         } catch (PDOException $eror) {
@@ -78,15 +79,16 @@ class DBaccess
         }
         $row = $SendDB->fetchArray(PDO::FETCH_ASSOC);
         $exists = ($row['count'] === 1) ? true : false;
-        $SendDB->null;
+        $SendDB=null;
         return $exists;
     }
     protected function getUsersPassword($username)
     {
-        $sql = 'SELECT password
+        $sql = "SELECT password
             FROM :tablename
-            WHERE username = :username';
-        $SendDB = $this->DBConnect->prepare($sql);
+            WHERE 'username' = ':username';";
+        $sendDBQ = $this->DBConnect->quote($sql);
+        $SendDB = $this->DBConnect->prepare($sendDBQ);
         $SendDB->bindValue(':tablename', $this->tableName);
         $SendDB->bindValue(':username', $username);
         try {
@@ -96,18 +98,19 @@ class DBaccess
         }
         $row = $SendDB->fetchArray(PDO::FETCH_ASSOC);
         $password = $row['password'];
-        $SendDB = null;
+        $SendDB=null;
         return $password;
     }
 
     public function createUser($username, $password)
     {
         //-- INSERT INTO person (first_name, last_name) VALUES ('John', 'Doe');
-        $sql = 'INSERT INTO :tablename (username,password)
-        VALUES (:username,:password)';
+        $sql = "INSERT INTO ':tablename'
+        VALUES (':username',':password');";
         $options = array('cost' => 10);
         $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-        $sendDB = $this->DBConnect->prepare($sql);
+        $sendDBQ = $this->DBConnect->quote($sql);
+        $sendDB = $this->DBConnect->prepare($sendDBQ);
         $sendDB->bindValue(':username', $username);
         $sendDB->bindValue(':password', $derivedPassword);
         $sendDB->bindValue(':tablename', $this->tableName);
@@ -116,7 +119,7 @@ class DBaccess
         } catch (PDOException $eror) {
             echo $eror;
         }
-        $sendDB->null;
+        $SendDB = null;
         return $this->DBConnect;
     }
 
