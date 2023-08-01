@@ -24,14 +24,12 @@ class DBaccess
         } catch (PDOException $eror) {
             echo "Connection failed: " . $eror->getMessage();
         }
-        $sql = "CREATE TABLE IF NOT EXISTS '?'
-        (ID INT NOT NULL AUTO_INCREMENT,
-         username TEXT NOT NULL,
-         password TEXT NOT NULL,
-         PRIMARY KEY (ID)
-        )ENGINE=InnoDB;";
+        $sql = "CREATE TABLE IF NOT EXISTS " . $this->Database . "." . $this->tableName . "
+        ( username TEXT NOT NULL,
+          password TEXT NOT NULL,
+          PRIMARY KEY (ID)
+        ) ENGINE=InnoDB;";
         $SendDB = $this->DBConnect->prepare($sql);
-        $SendDB->bindParam(1, $this->tableName,PDO::PARAM_STR);
         try {
             $SendDB->execute();
         } catch (PDOException $eror) {
