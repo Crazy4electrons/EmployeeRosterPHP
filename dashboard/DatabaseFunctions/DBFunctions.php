@@ -9,7 +9,7 @@ class DBaccess
     public $DBConnect;
     public $username;
 
-    public function __construct(string $username,string $passuser,bool $adduser = false)
+    public function __construct(string $username, string $passuser, bool $adduser = false)
     {
         $this->username = $username;
         $this->initialize($username, $passuser, $adduser);
@@ -25,9 +25,11 @@ class DBaccess
             echo "Connection failed: " . $eror->getMessage();
         }
         $sql = "CREATE TABLE IF NOT EXISTS " . $this->Database . "." . $this->tableName . "
-        ( username TEXT NOT NULL,
+        (id INT NOT NULL AUTO_INCREMENT, 
+            username TEXT NOT NULL,
           password TEXT NOT NULL,
-          PRIMARY KEY (ID)
+          PRIMARY KEY (ID),
+          UNIQUE(username)
         ) ENGINE=InnoDB;";
         $SendDB = $this->DBConnect->prepare($sql);
         try {
@@ -35,15 +37,14 @@ class DBaccess
         } catch (PDOException $eror) {
             print_r("$eror");
         }
-        $SendDB=null;
+
 
         if ($adduser === true) {
             $this->createUser($username, $password);
-        } elseif ($this->authenticateUser($this->username, $password)) {
+        } else if ($this->authenticateUser($this->username, $password)) {
             return $this->DBConnect;
         } else {
-            header("Location: " . $_SERVER['HTTP_HOST'] . "/dashboard/index.php/?login=false");
-            exit;
+            return false;
         }
     }
     public function authenticateUser(string $username, string $password)
@@ -61,15 +62,12 @@ class DBaccess
         return $authenticated;
     }
 
-    protected function userExists(string $username)
+    public function userExists(string $username)
     {
         $sql = "SELECT COUNT(*) AS 'count'
-        FROM ?
-        WHERE 'username' = '?';";
-        $sendDBQ = $this->DBConnect->quote($sql);
-        $SendDB = $this->DBConnect->prepare($sendDBQ);
-        $SendDB->bindParam(1, $this->tableName,PDO::PARAM_STR);
-        $SendDB->bindParam(2, $username,PDO::PARAM_STR);
+        FROM " . $this->tableName . "
+        WHERE 'username' = '" . $username . "';";
+        $SendDB = $this->DBConnect->prepare($sql);
         try {
             $SendDB->execute();
         } catch (PDOException $eror) {
@@ -77,7 +75,7 @@ class DBaccess
         }
         $row = $SendDB->fetchArray(PDO::FETCH_ASSOC);
         $exists = ($row['count'] === 1) ? true : false;
-        $SendDB=null;
+
         return $exists;
     }
     protected function getUsersPassword($username)
@@ -96,29 +94,65 @@ class DBaccess
         }
         $row = $SendDB->fetchArray(PDO::FETCH_ASSOC);
         $password = $row['password'];
-        $SendDB=null;
+
         return $password;
     }
 
     public function createUser($username, $password)
     {
-        //-- INSERT INTO person (first_name, last_name) VALUES ('John', 'Doe');
-        $sql = "INSERT INTO ':tablename'
-        VALUES (':username',':password');";
         $options = array('cost' => 10);
         $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-        $sendDBQ = $this->DBConnect->quote($sql);
-        $sendDB = $this->DBConnect->prepare($sendDBQ);
-        $sendDB->bindValue(':username', $username);
-        $sendDB->bindValue(':password', $derivedPassword);
-        $sendDB->bindValue(':tablename', $this->tableName);
+        $sql = "INSERT INTO " . $this->tableName . " (username,password)
+            VALUES ('" . $username . "','" . $derivedPassword . "')
+            ON DUPLICATE KEY UPDATE username='" . $username . "';";
+        $sendDB = $this->DBConnect->prepare($sql);
         try {
             $sendDB->execute();
+            return true;
         } catch (PDOException $eror) {
             echo $eror;
+            return false;
         }
-        $SendDB = null;
-        return $this->DBConnect;
+    }
+
+    function create_table(string $table_name, $columns, $primary_key = null, $unique_keys = null)
+    {
+
+        $create_table_sql = "CREATE TABLE $table_name (";
+        foreach ($columns as $column) {
+            $create_table_sql .= "$column, ";
+        }
+        // Set the primary key if provided
+        if ($primary_key) {
+            $create_table_sql .= "PRIMARY KEY ($primary_key), ";
+        }
+        // Set the unique keys if provided
+        if ($unique_keys) {
+            foreach ($unique_keys as $key) {
+                $create_table_sql .= "UNIQUE ($key), ";
+            }
+        }
+        // Remove any trailing comma and space
+        $create_table_sql = rtrim($create_table_sql, ", ") . ")";
+        // Execute the SQL statement to create the table
+        $sql = $this->DBConnect->prepare($create_table_sql);
+        try {
+            $sql->execute;
+            echo "Table created successfully";
+            return true;
+        } catch (PDOException $eror) {
+            echo "Error creating table: " . $eror;
+            return false;
+        }
+    }
+
+    public function closeConnection()
+    {
+        if ($this->DBConnect->close()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function printDB()
