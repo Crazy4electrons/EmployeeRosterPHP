@@ -21,12 +21,21 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 <?php
+session_start();
 require "./headers/Mheader.html";
 // include "nav";
 if(isset($GET['register']) && !empty($GET['register']) && ($_GET['register']===true)){
     require "./Body/Login.php";
-}else if(isset($_COOKIE['username'],$_COOKIE['Hpassword']) && !empty($_COOKIE)) {
-    require "./Body/Main.php";
+}else if(isset($_COOKIE[$_GET['username']]) && !empty($_COOKIE[$_GET['username']])) {
+    $RjsonString = $_COOKIE["'".$Get['username']."'"];
+    $usercookies = json_decode($RjsonString);
+    if ($usercookies['rememberPass'] == 1) {   
+        require "./Body/Main.php";
+    }else if($_SESSION['loggedIn'] == 'yes'){
+        require "./Body/Main.php";
+    }else{
+        require "./Body/Login.php";
+    }
 }else{
     require "./Body/login.php";
 }

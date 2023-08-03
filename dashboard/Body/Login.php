@@ -16,7 +16,7 @@
     <form id="Lform" method="POST" action="../Body/checkLoginServer.php" id="Login">
         <input type="text" name="username" placeholder="username" id="Lusername" required>
         <input type="password" name="password" placeholder="Password" id="Lpassword" required>
-        <input type="checkbox" name="remeberPass" id="rememberPass" placeholder="Do you want to remember password">
+        <input type="checkbox" name="remeberPass" id="rememberPass" placeholder="Stay logged in">
         <button type="Button" onclick="validateAndSubmit()">Submit</button>
     </form>
     <div id="noPass">
