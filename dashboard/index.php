@@ -24,6 +24,10 @@
 session_start();
 require "./headers/Mheader.html";
 // include "nav";
+
+
+
+
 if(isset($GET['register']) && !empty($GET['register']) && ($_GET['register']===true)){
     require "./Body/Login.php";
 }else if(isset($_COOKIE[$_GET['username']]) && !empty($_COOKIE[$_GET['username']])) {
