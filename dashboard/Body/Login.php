@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="../CssFiles/LoginStyle.css">
 <?php if ((isset($_GET["register"]) && !empty($_GET['register']) && $_Get['register']) === true) : ?>
-    <p>Register</p>
+    <p >Register</p>
     <form id="Lform" method="POST" action="./checkLoginServer.php/?register=true" id="Login">
         <input type="text" name="username" placeholder="username" id="Lusername" required>
         <input type="password" name="password" placeholder="Password" id="Lpassword" required>
@@ -17,6 +17,7 @@
         <input type="text" name="username" placeholder="username" id="Lusername" required>
         <input type="password" name="password" placeholder="Password" id="Lpassword" required>
         <input type="checkbox" name="remeberPass" id="rememberPass" placeholder="Stay logged in">
+        <span>Stay logged in?</span>
         <button type="Button" onclick="validateAndSubmit()">Submit</button>
     </form>
     <div id="noPass">

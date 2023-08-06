@@ -24,9 +24,17 @@
 session_start();
 require "./headers/Mheader.html";
 // include "nav";
+
+
+
+
+
+
+
+
 if(isset($GET['register']) && !empty($GET['register']) && ($_GET['register']===true)){
     require "./Body/Login.php";
-}else if(isset($_COOKIE[$_GET['username']]) && !empty($_COOKIE[$_GET['username']])) {
+}else if(isset($_COOKIE['']) && !empty($_GET['username'])) {
     $RjsonString = $_COOKIE["'".$Get['username']."'"];
     $usercookies = json_decode($RjsonString);
     if ($usercookies['rememberPass'] == 1) {   
