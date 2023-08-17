@@ -1,12 +1,15 @@
 <?php
-class SesionFunc
+class SessionFunctions
 {
+    private static $isCalled = false;
+    private static $name = 'user';
+    private static $sessionPath = "./Environmentvariables/";
     // Function to set a value in the session array
-    function __construct(string $name,string $sessionPath,)
+    function __construct()
     {
-        session_name($name);
-        session_save_path($sessionPath);
-        session_start();
+    if (!self::$isCalled) {
+        session_name(self::$name);
+    }
     }
     function setSessionValue($key, $value)
     {
@@ -37,14 +40,14 @@ class SesionFunc
     }
     function resetSession()
     {
-        if(session_reset()){
+        if (session_reset()) {
             return true;
         }
         return false;
     }
     function unsetSession()
     {
-        if(session_unset()){
+        if (session_unset()) {
             return true;
         }
         return false;
