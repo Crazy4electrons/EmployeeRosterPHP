@@ -1,3 +1,7 @@
+<?php
+$CntrlSession = new SessionFunctions();
+?>
+
 <!-- $title = "Login"; -->
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -21,27 +25,14 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 <?php
-session_start();
 require "./headers/Mheader.html";
 // include "nav";
-if(isset($GET['register']) && !empty($GET['register']) && ($_GET['register']===true)){
+if(isset($_Get['redirect']) && !empty($_GET['redirect'])){
+if($_GET['redirect'] == 'main'){
+    require "./Body/main.php";
+}else{ 
     require "./Body/Login.php";
-}else if(isset($_COOKIE['']) && !empty($_GET['username'])) {
-    $RjsonString = $_COOKIE["'".$Get['username']."'"];
-    $usercookies = json_decode($RjsonString);
-    if ($usercookies['rememberPass'] == 1) {   
-        require "./Body/Main.php";
-    }else if($_SESSION['loggedIn'] == 'yes'){
-        require "./Body/Main.php";
-    }else{
-        require "./Body/Login.php";
-    }
-}else{
-    require "./Body/login.php";
 }
-
-
-
 require "./Footer/MainFooter.html";
 ?>
     <script src="" async defer></script>

@@ -1,15 +1,28 @@
 <?php
 class SessionFunctions
 {
+    /**
+     * this is a object which set or get session variables
+     * and sets session name and path.
+     */
     private static $isCalled = false;
     private static $name = 'user';
     private static $sessionPath = "./Environmentvariables/";
-    // Function to set a value in the session array
     function __construct()
     {
-    if (!self::$isCalled) {
-        session_name(self::$name);
-    }
+        if (!self::$isCalled) {
+            if (session_status() != PHP_SESSION_DISABLED ) {
+                session_name(self::$name);
+                session_save_path(self::$sessionPath);
+                session_start();
+                self::$isCalled = true;
+            }else{
+                return session_status();
+            }
+        }else{
+            session_regenerate_id();
+            return null;
+        }
     }
     function setSessionValue($key, $value)
     {
@@ -38,6 +51,7 @@ class SessionFunctions
             unset($_SESSION[$key]);
         }
     }
+    //function to reset session
     function resetSession()
     {
         if (session_reset()) {
@@ -45,6 +59,7 @@ class SessionFunctions
         }
         return false;
     }
+    //clear session variable
     function unsetSession()
     {
         if (session_unset()) {

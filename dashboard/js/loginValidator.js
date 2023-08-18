@@ -18,3 +18,7 @@ function validateAndSubmit() {
     alert("name should atleast be 6 characters long.")
   }
 }
+
+function checkwithadmin(){
+  prompt
+}
