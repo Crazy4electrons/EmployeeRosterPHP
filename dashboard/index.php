@@ -9,33 +9,46 @@ $CntrlSession = new SessionFunctions();
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>
-            Login
-        </title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../CssFiles/MCss.css">
-        <link href="./images/favicon.ico" rel="icon" type="image/png" />
-    </head>
-    <body>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        Login
+    </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../CssFiles/MCss.css">
+    <link href="./images/favicon.ico" rel="icon" type="image/png" />
+</head>
+
+<body>
     <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-<?php
-require "./headers/Mheader.html";
-// include "nav";
-if(isset($_Get['redirect']) && !empty($_GET['redirect'])){
-if($_GET['redirect'] == 'main'){
-    require "./Body/main.php";
-}else{ 
-    require "./Body/Login.php";
-}
-require "./Footer/MainFooter.html";
-?>
-    <script src="" async defer></script>
-    </body>
-    <script src="./js/all.js" crossorigin="anonymous"></script>
+    <?php
+    require "./headers/Mheader.html";
+    // include "nav";
+    if (isset($_GEt['redirect']) && !empty($_GET['redirect'])) {
+        switch ($_GET['redirect']) {
+            case 'main':
+                require "./Body/main.php";
+                break;
+            case 'login':
+                require "./Body/Login.php?login=true";
+                break;
+            case 'register':
+                require "./Body/login.php?login=false";
+
+            default:
+                echo "Theres an error in your url";
+        }
+    }else{
+        echo "no page specified"
+    }
+    require "./Footer/MainFooter.html";
+    ?>
+    <script src="./js/all.js" crossorigin="anonymous" async defer></script>
+</body>
+
 </html>

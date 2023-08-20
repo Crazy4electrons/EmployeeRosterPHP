@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="../CssFiles/LoginStyle.css">
-<?php if ((isset($_GET["register"]) && !empty($_GET['register']) && $_Get['register']) === true) : ?>
+<?php if ((isset($_GET["login"]) && !empty($_GET['login']) && $_Get['login']) === false) : ?>
     <p >Register</p>
     <form id="Lform" method="POST" action="./checkLoginServer.php/?register=true" id="Login">
         <input type="text" name="username" placeholder="username" id="Lusername" required>
