@@ -44,6 +44,6 @@ function checkwithadmin() {
     })
     .catch(error => {
       console.error("Error:", error);
-    });
+    })
 
 }

@@ -12,34 +12,39 @@ class adminAuth
     private static $adminAuth = './adminAuth.json';
     protected $userNames;
     private $response;
-    private $message;
     function __construct()
     {
-        /**
-         * check if file is already created and then read file
-         * else
-         * create file.
-         */
         $this->RefreshUserNames();
-        if (isset($_POST['message']) && !empty($_POST['message'])) {
-            $this->message = json_decode($_POST['message']);
-        }else{
-            $response = "no text in post";
-        }
     }
+
     function authenticateUser(string $username, string $password)
     {
-        if ($this->userExists($username)) {
-            $storedPassword = $this->getUsersPassword($username);
-            if (password_verify($password, $storedPassword)) {
-                $authenticated = true;
-            } else {
-                $authenticated = false;
+        $authenticated = false;
+        $checkpassword  = '/\b[A-Za-z0-9]+\b/';
+        $checkusername = '/\bi[a-z0-9_]+\b/';
+        if (preg_match($checkusername, $username)) {
+            if (preg_match($checkpassword, $password)) {
+                if ($this->userExists($username)) {
+                    $storedPassword = $this->getUsersPassword($username);
+                    if (password_verify($password, $storedPassword)) {
+                        $this->response['content'] = ['verify' => 'true'];
+                        $authenticated = true;
+                    } else {
+                        $this->response['content'] = ['verify' => 'false'];
+                        $authenticated = false;
+                    }
+                }
             }
-        } else {
-            $authenticated = false;
         }
         return $authenticated;
+    }
+    function adminaddadmin($username, $password, $adminusername, $adminpassword)
+    {
+        if (!$this->userExists($username)) {
+            if ($this->authenticateUser($adminusername, $adminpassword)) {
+                $this->CreateUser($username, $password);
+            }
+        }
     }
 
     function userExists(string $username)
@@ -52,40 +57,34 @@ class adminAuth
 
     protected function getUsersPassword($username)
     {
-        $sql = "SELECT password
-            FROM :tablename
-            WHERE 'username' = ':username';";
-        $sendDBQ = $this->DBConnect->quote($sql);
-        $SendDB = $this->DBConnect->prepare($sendDBQ);
-        $SendDB->bindValue(':tablename', $this->tableName);
-        $SendDB->bindValue(':username', $username);
-        try {
-            $SendDB->execute();
-        } catch (PDOException $eror) {
-            echo $eror;
-        }
-        $row = $SendDB->fetchArray(PDO::FETCH_ASSOC);
-        $password = $row['password'];
-
+        if(isset($this->userNames[$username])&& !empty($this->userNames[$username])){
+        $password = $this->userNames[$username];
         return $password;
+        }
+        return null;
     }
 
-    public function CreateUser($username, $password)
+    private function CreateUser($username, $password)
     {
-        $options = array('cost' => 10);
-        $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-        $sql = "INSERT INTO " . $this->tableName . " (username,password)
-            VALUES ('" . $username . "','" . $derivedPassword . "')
-            ON DUPLICATE KEY UPDATE username='" . $username . "';";
-        $sendDB = $this->DBConnect->prepare($sql);
-        try {
-            $sendDB->execute();
-            return true;
-        } catch (PDOException $eror) {
-            echo $eror;
+        $checkpassword  = '/\b[A-Za-z0-9]+\b/';
+        $checkusername = '/\bi[A-Za-z0-9_]+\b/';
+        if (preg_match($checkusername, $username)) {
+            if (preg_match($checkpassword, $password)) {
+                $options = array('cost' => 10);
+                $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
+                $this->userNames[$username] = $derivedPassword;
+                $this->response['message'] = ['createuser' => 'true'];
+                return true;
+            } else {
+                $this->response['message'] = ['createuser' => 'false'];
+                return false;
+            }
+        } else {
+            $this->response['message'] = ['createuser' => 'false'];
             return false;
         }
     }
+
     private function RefreshUserNames()
     {
         if (file_exists(self::$adminAuth)) {
@@ -96,10 +95,15 @@ class adminAuth
             if (touch($this->adminAuth)) {
                 $jsonfile = file_get_contents(self::$adminAuth, false);
                 $this->userNames = json_decode($jsonfile);
-                $response['message'] = ['filefind' => 'newfile created',];
+                $this->response['message'] = ['filefind' => 'newfile created',];
             } else {
-                $response['message'] = ['filefind' => "file couldn't be created \n username not saved",];
+                $this->response['message'] = ['filefind' => "file couldn't be created \n username not saved",];
             }
         }
+    }
+    function getresponsedata(): string
+    {
+        $jsonreponse = json_encode($this->response);
+        return $jsonreponse;
     }
 }
