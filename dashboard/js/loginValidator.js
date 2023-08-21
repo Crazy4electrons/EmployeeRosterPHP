@@ -22,8 +22,10 @@ function validateAndSubmit() {
 function checkwithadmin() {
   let answer = prompt("Please ask admin to enter password");
   // Create a data object to send as the payload
-  const data = {
+  const message = {
+    adminDo : 'auth',
     password: answer,
+    username : 'EDS',
   };
 
   // Create the options for the fetch request
@@ -32,16 +34,14 @@ function checkwithadmin() {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(message),
   };
 
   // Send the POST request and receive the response
   fetch("../classes/adminauth.php", options)
     .then(response => response.json())
     .then(result => {
-      // Evaluate the received variable here
-
-      console.log(result);
+     console.log(result);
     })
     .catch(error => {
       console.error("Error:", error);

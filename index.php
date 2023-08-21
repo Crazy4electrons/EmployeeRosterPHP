@@ -1,5 +1,5 @@
 <?php
-require_once "./dashboard/functions/SessionCntrl.php";
+require_once "./dashboard/classes/SessionCntrl.php";
 $CntrlSession = new SessionFunctions();
 if($CntrlSession->isKeyExistsInSession('username')){
     setcookie('username',$CntrlSession->getSessionValue("username"),time()+60*60*24);

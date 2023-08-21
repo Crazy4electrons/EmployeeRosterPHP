@@ -1,7 +1,3 @@
-<?php
-// $CntrlSession = new SessionFunctions();
-?>
-
 <!DOCTYPE html>
 <!-- $title = "Login"; -->
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->

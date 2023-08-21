@@ -1,7 +1,5 @@
 <?php
 
-use adminAuth as GlobalAdminAuth;
-
 /**
  * admin class is used to save and match
  *  admin user password with saved
@@ -114,20 +112,14 @@ class adminAuth
 $adminget = new AdminAuth();
 if (isset($_POST['message']) && !empty($_POST['message'])) {
     $clientdata = json_decode($_POST['message']);
-    if (isset($clientdata['content']) && !empty($clientdata['content'])) {
-        foreach ($clientdata['content'] as $key => $value) {
-            switch ($key) {
-                case 'addadmin':
-                    if ($key == 'true') {
-                    }
-                    break;
-                case 'authadmin':
-                    if ($key == 'true') {
-                        
-                    }
-            }
+    if (isset($clientdata['admindo']) && !empty($clientdata['admindo'])) {
+        switch ($clientdata['admindo']) {
+            case 'auth':
+                if ($adminget->authenticateUser($clientdata['username'], $clientdata['password'])) {
+                    echo $adminget->getresponsedata();
+                }
+                break;
+            case 'addadmin':
         }
-    }
-    if (isset($clientdata['adminuser']) && !empty($clientdata['adminuser'])) {
     }
 }
