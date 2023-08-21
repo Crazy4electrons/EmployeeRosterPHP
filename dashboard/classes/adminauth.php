@@ -1,5 +1,7 @@
 <?php
 
+use adminAuth as GlobalAdminAuth;
+
 /**
  * admin class is used to save and match
  *  admin user password with saved
@@ -57,9 +59,9 @@ class adminAuth
 
     protected function getUsersPassword($username)
     {
-        if(isset($this->userNames[$username])&& !empty($this->userNames[$username])){
-        $password = $this->userNames[$username];
-        return $password;
+        if (isset($this->userNames[$username]) && !empty($this->userNames[$username])) {
+            $password = $this->userNames[$username];
+            return $password;
         }
         return null;
     }
@@ -105,5 +107,27 @@ class adminAuth
     {
         $jsonreponse = json_encode($this->response);
         return $jsonreponse;
+    }
+}
+
+
+$adminget = new AdminAuth();
+if (isset($_POST['message']) && !empty($_POST['message'])) {
+    $clientdata = json_decode($_POST['message']);
+    if (isset($clientdata['content']) && !empty($clientdata['content'])) {
+        foreach ($clientdata['content'] as $key => $value) {
+            switch ($key) {
+                case 'addadmin':
+                    if ($key == 'true') {
+                    }
+                    break;
+                case 'authadmin':
+                    if ($key == 'true') {
+                        
+                    }
+            }
+        }
+    }
+    if (isset($clientdata['adminuser']) && !empty($clientdata['adminuser'])) {
     }
 }

@@ -1,9 +1,9 @@
 function validateAndSubmit() {
-  var inputName = document.getElementById("Lusername").value;
-  var inputPass = document.getElementById("Lpassword").value;
-  var inputPasslength = inputPass.length;
-  var inputNamelength = inputPass.length;
-  var regex = /^[a-zA-Z_]+$/;
+  let inputName = document.getElementById("Lusername").value;
+  let inputPass = document.getElementById("Lpassword").value;
+  let inputPasslength = inputPass.length;
+  let inputNamelength = inputPass.length;
+  let regex = /^[a-zA-Z_]+$/;
   if (inputNamelength >= 6) {
     if (regex.test(inputName)) {
       if (inputPasslength >= 8) {
@@ -36,10 +36,11 @@ function checkwithadmin() {
   };
 
   // Send the POST request and receive the response
-  fetch("../functions/adminauth.php, options){
+  fetch("../classes/adminauth.php", options)
     .then(response => response.json())
     .then(result => {
       // Evaluate the received variable here
+
       console.log(result);
     })
     .catch(error => {

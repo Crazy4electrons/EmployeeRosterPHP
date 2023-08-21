@@ -1,9 +1,9 @@
 <?php
-$CntrlSession = new SessionFunctions();
+// $CntrlSession = new SessionFunctions();
 ?>
 
-<!-- $title = "Login"; -->
 <!DOCTYPE html>
+<!-- $title = "Login"; -->
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -29,22 +29,24 @@ $CntrlSession = new SessionFunctions();
     <?php
     require "./headers/Mheader.html";
     // include "nav";
-    if (isset($_GEt['redirect']) && !empty($_GET['redirect'])) {
+    if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
         switch ($_GET['redirect']) {
             case 'main':
-                require "./Body/main.php";
+                require "Body/main.php";
                 break;
             case 'login':
-                require "./Body/Login.php?login=true";
+                $_GET['login'] = true;
+                require "Body/Login.php";
                 break;
             case 'register':
-                require "./Body/login.php?login=false";
-
+                $_GET['login'] = false;
+                require "Body/Login.php/";
+                break;
             default:
                 echo "Theres an error in your url";
         }
-    }else{
-        echo "no page specified"
+    } else {
+        echo "no page specified";
     }
     require "./Footer/MainFooter.html";
     ?>

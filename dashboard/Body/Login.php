@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="../CssFiles/LoginStyle.css">
-<?php if ((isset($_GET["login"]) && !empty($_GET['login']) && $_Get['login']) === false) : ?>
+<?php if ((isset($_GET['login']) && !empty($_GET['login']))): ?>
+    <?php if(!$_GET['login']):?>
     <p >Register</p>
     <form id="Lform" method="POST" action="./checkLoginServer.php/?register=true" id="Login">
         <input type="text" name="username" placeholder="username" id="Lusername" required>
@@ -16,8 +17,10 @@
     <form id="Lform" method="POST" action="../Body/checkLoginServer.php" id="Login">
         <input type="text" name="username" placeholder="username" id="Lusername" required>
         <input type="password" name="password" placeholder="Password" id="Lpassword" required>
-        <input type="checkbox" name="remeberPass" id="rememberPass" placeholder="Stay logged in">
+        <label>
+        <input style="display:inline" type="checkbox" name="remeberPass" id="rememberPass" placeholder="Stay logged in">
         <span>Stay logged in?</span>
+</label>
         <button type="Button" onclick="validateAndSubmit()">Submit</button>
     </form>
     <div id="noPass">
@@ -28,5 +31,6 @@
             <button type="button" onclick="checkwithadmin()">then register or change password</button>
         </p>
     </div>
+    <?php endif ?>
 <?php endif ?>
-<script src=" ../js/loginValidator.js" crossorigin="Local"></script>
+        <script src=" ../js/loginValidator.js" async="true" crossorigin="Local"></script>
