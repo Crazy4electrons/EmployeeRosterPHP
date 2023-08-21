@@ -23,13 +23,13 @@ function checkwithadmin() {
   let answer = prompt("Please ask admin to enter password");
   // Create a data object to send as the payload
   const message = {
-    adminDo : 'auth',
+    adminDo: 'auth',
     password: answer,
-    username : 'EDS',
+    username: 'EDS',
   };
 
   // Create the options for the fetch request
-  const options = {
+  const request = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,13 +38,27 @@ function checkwithadmin() {
   };
 
   // Send the POST request and receive the response
-  fetch("../classes/adminauth.php", options)
-    .then(response => response.json())
-    .then(result => {
-     console.log(result);
-    })
-    .catch(error => {
-      console.error("Error:", error);
-    })
-
+  request.json().then((data) => {
+    console.log(data);
+  });
 }
+//   fetch("../classes/adminauth.php", options)
+//     .then(response => response.json)
+//     .then(result => {
+//      console.log(result);
+//     })
+//     .catch(error => {
+//       console.error("Error:", error);
+//     })
+
+// }
+// const obj = { hello: "world" };
+
+// const request = new Request("/myEndpoint", {
+//   method: "POST",
+//   body: JSON.stringify(obj),
+// });
+
+// request.json().then((data) => {
+//   // do something with the data sent in the request
+// });

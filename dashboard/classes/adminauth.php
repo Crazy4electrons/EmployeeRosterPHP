@@ -103,8 +103,8 @@ class adminAuth
     }
     function getresponsedata(): string
     {
-        $jsonreponse = json_encode($this->response);
-        return $jsonreponse;
+        // $jsonreponse = json_encode($this->response);
+        return $this->response;
     }
 }
 
