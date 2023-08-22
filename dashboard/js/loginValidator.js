@@ -38,37 +38,20 @@ function sendMessage() {
   let adminusername = document.getElementById('adminusername').value;
   let adminpassword = document.getElementById('adminpassword').value;
   let message = { AdminpPassword: adminpassword, AdminUsername: adminusername };
-
-  // var messageInput = document.getElementById('message');
-  // var message = messageInput.value;
   console.log(message);
-
-  // Send the message to the PHP script using AJAX
-  var xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-      // console.log(xhr.response);
       let response = xhr.responseText;
-
-      // Check if the response is not empty
       if (response.trim() !== '') {
         let jsonData = JSON.parse(response);
         console.log(jsonData);
         console.log(response);
-
-        // Process the parsed JSON data here
-      } else {
-        console.log('Empty response');
-      }
-    } else {
-      console.log('XHR request failed with status:', xhr.status);
-    }
+      } else { console.log('Empty response'); }
+    } else { console.log('XHR request failed with status:', xhr.status); }
   }
-  xhr.open('POST', '../classes/adminauth.php', true);
-  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.open('POST', '../classes/adminauth.php', true); xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.send('message=' + encodeURIComponent(message));
-
-  // messageInput.value = '';
 }
 
 // Create a data object to send as the payload
