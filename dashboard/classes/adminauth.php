@@ -7,7 +7,7 @@
  * and save and retrieve values using json strings
  *
  */
-class adminAuth
+class AdminAuthfrom
 {
     private static $adminAuth = './adminAuth.json';
     protected $userNames;
@@ -73,6 +73,8 @@ class adminAuth
                 $options = array('cost' => 10);
                 $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
                 $this->userNames[$username] = $derivedPassword;
+                $jsonSavefile = json_encode($this->userNames);
+                file_put_contents(self::$adminAuth,$jsonSavefile);
                 $this->response['message'] = ['createuser' => 'true'];
                 return true;
             } else {
@@ -92,9 +94,14 @@ class adminAuth
             $jsonfile = file_get_contents(self::$adminAuth, false);
             $this->userNames = json_decode($jsonfile);
         } else {
-            if (touch($this->adminAuth)) {
+            if (touch(self::$adminAuth)) {
                 $jsonfile = file_get_contents(self::$adminAuth, false);
                 $this->userNames = json_decode($jsonfile);
+                if(!isset($this->userNames['root']) && empty($this->userNames['root'])){
+                    $this->userNames['eds'] = 'No1PassAdmin';
+                    $jsonSav1stAdmin = json_encode($this->userNames);
+                    file_put_contents(self::$adminAuth,$jsonSav1stAdmin);
+                }
                 $this->response['message'] = ['filefind' => 'newfile created',];
             } else {
                 $this->response['message'] = ['filefind' => "file couldn't be created \n username not saved",];
@@ -103,14 +110,15 @@ class adminAuth
     }
     function getresponsedata(): string
     {
-        // $jsonreponse = json_encode($this->response);
-        return $this->response;
+        $jsonresponse = json_encode($this->response);
+        return $jsonresponse;
     }
 }
 
 
-$adminget = new AdminAuth();
+$adminget = new AdminAuthfrom();
 if (isset($_POST['message']) && !empty($_POST['message'])) {
+    print_r($_POST['message']);
     $clientdata = json_decode($_POST['message']);
     if (isset($clientdata['admindo']) && !empty($clientdata['admindo'])) {
         switch ($clientdata['admindo']) {
