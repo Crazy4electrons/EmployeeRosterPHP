@@ -103,7 +103,7 @@ class AdminAuthfrom
     private function RefreshUserNames()
     {
         if (file_exists(self::$adminAuth)) {
-            $response['message'] = ['filefind' => "The file " . self::$adminAuth . " exists."];
+            $this->response['message'] = ['filefind' => "The file " . self::$adminAuth . " exists."];
             $jsonfile = file_get_contents(self::$adminAuth, false);
             $this->userNames = json_decode($jsonfile);
         } else {
