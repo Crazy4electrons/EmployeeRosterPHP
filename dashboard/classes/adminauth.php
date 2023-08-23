@@ -1,7 +1,5 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 /**
  * admin class is used to save and match
  *  admin user password with saved
@@ -9,7 +7,7 @@ error_reporting(E_ALL);
  * and save and retrieve values using json strings
  *
  */
-class AdminAuthfrom
+class AdminAuthForm
 {
     private static $adminAuth = './adminAuth.json';
     protected $userNames;
@@ -30,12 +28,11 @@ class AdminAuthfrom
             if (preg_match($checkPassword, $password)) {
                 if ($this->userExists($username)) {
                     $storedPassword = $this->getUsersPassword($username);
-                    error_log($storedPassword); // Debug: Display stored password
                     if (password_verify($password, $storedPassword)) {
-                        $this->response['content'] = ['verify' => 'true'];
+                        $this->response['UserAuth'] = ['true'];
                         $authenticated = true;
                     } else {
-                        $this->response['content'] = ['verify' => 'false'];
+                        $this->response['UserAuth'] = ['false'];
                         $authenticated = false;
                     }
                 }
@@ -50,6 +47,7 @@ class AdminAuthfrom
         if (!$this->userExists($username)) {
             if ($this->authenticateUser($adminUsername, $adminPassword)) {
                 $this->createUser($username, $password);
+                $this->response['UserCreateSuccess'] = "" . $username . " was created successfully";
             }
         }
     }
@@ -59,7 +57,7 @@ class AdminAuthfrom
         if (isset($this->userNames[$username]) && !empty($this->userNames[$username])) {
             return true;
         }
-        error_log("User does not exist: " . $username); // Log error message
+        $this->response['UserExists'] = "User does not exist: " . $username; // Log error message
         return false;
     }
 
@@ -69,7 +67,7 @@ class AdminAuthfrom
             $password = $this->userNames[$username];
             return $password;
         }
-        error_log("Failed to get user's password for username: " . $username); // Log error message
+        $this->response['GetUserPass'] = "Failed to get user's password for username: " . $username; // Log error message
         return null;
     }
 
@@ -85,79 +83,62 @@ class AdminAuthfrom
                 $this->userNames[$username] = $derivedPassword;
                 $jsonSavefile = json_encode($this->userNames);
                 file_put_contents(self::$adminAuth, $jsonSavefile);
-                $this->response['message'] = ['createuser' => 'true'];
+                $this->response['CreateUser'] = ['true'];
                 return true;
             } else {
-                error_log("Invalid password format"); // Log error message
-                $this->response['message'] = ['createuser' => 'false'];
+
+                $this->response['CreateUser'] = ['false'];
                 return false;
             }
         } else {
-            error_log("Invalid username format"); // Log error message
-            $this->response['message'] = ['createuser' => 'false'];
+            $this->response['CreateUser'] = ['false'];
             return false;
         }
     }
 
 
-    private function RefreshUserNames()
+    private function refreshUserNames()
     {
         if (file_exists(self::$adminAuth)) {
-            $this->response['message'] = ['filefind' => "The file " . self::$adminAuth . " exists."];
+            $this->response['SaveFile'] = ["The file " . self::$adminAuth . " exists."];
             $jsonfile = file_get_contents(self::$adminAuth, false);
             $this->userNames = json_decode($jsonfile);
         } else {
             if (touch(self::$adminAuth)) {
                 $jsonfile = file_get_contents(self::$adminAuth, false);
                 $this->userNames = json_decode($jsonfile);
-                if (!isset($this->userNames['root']) && empty($this->userNames['root'])) {
+                if (!isset($this->userNames['eds']) && empty($this->userNames['eds'])) {
                     $this->userNames['eds'] = 'No1PassAdmin';
                     $jsonSav1stAdmin = json_encode($this->userNames);
                     file_put_contents(self::$adminAuth, $jsonSav1stAdmin);
                 }
-                $this->response['message'] = ['filefind' => 'newfile created',];
+                $this->response['SaveFile'] = 'newfile created';
             } else {
-                $this->response['message'] = ['filefind' => "file couldn't be created \n username not saved",];
+                $this->response['SaveFile'] = "file couldn't be created \n username not saved";
             }
         }
     }
-    function getresponsedata()
+
+    function getResponseData()
     {
-        if (!(file_exists("./response.json"))) {
-
-            $contents = json_encode($this->response);
-            if (touch("./response")) {
-                file_put_contents("./response.json", $contents);
-            }
-        }
-
-
         $jsonresponse = json_encode($this->response);
+        // print_r("jsonresponse-{" . $jsonresponse . "} response-{" . $this->response);
         return $jsonresponse;
     }
 }
 
 
-$adminget = new AdminAuthfrom();
-if (isset($_POST['message']) && !empty($_POST['message'])) {
-    $clientdata = json_decode($_POST['message']);
-    echo("".$_POST['message']."Password-".$clientdata['AdminPassword']."  Username-".$$clientdata['AdminUsername']);
-    if (isset($clientdata['admindo']) && !empty($clientdata['admindo'])) {
-        switch ($clientdata['admindo']) {
-            case 'auth':
-                if ($adminget->authenticateUser($clientdata['username'], $clientdata['password'])) {
-                    $responseData = $adminget->getresponsedata();
-                    ob_clean();
-                    ob_start('OB_FLUSH');
-                    echo $responseData;
-                    ob_flush();
-                    error_log($adminget->getresponsedata());
-                }
-                break;
-            case 'addadmin':
-        }
+$adminget = new AdminAuthForm();
+
+if (isset($clientdata['AdminUsername']) && !empty($clientdata['AdminUsername'])) {
+    if ($adminget->authenticateUser($clientdata['AdminUsername'], $clientdata['AdminPassword'])) {
+        $responseData = $adminget->getResponseData();
+        echo $responseData;
     }
 }
+
+// }
+
 
 //   $adminUsername = $_POST['AdminUsername'];
 //   $adminUsername = "user response";
