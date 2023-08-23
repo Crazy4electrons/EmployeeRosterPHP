@@ -140,8 +140,8 @@ class AdminAuthfrom
 
 $adminget = new AdminAuthfrom();
 if (isset($_POST['message']) && !empty($_POST['message'])) {
-    error_log($_POST['message']);
     $clientdata = json_decode($_POST['message']);
+    echo("".$_POST['message']."Password-".$clientdata['AdminPassword']."  Username-".$$clientdata['AdminUsername']);
     if (isset($clientdata['admindo']) && !empty($clientdata['admindo'])) {
         switch ($clientdata['admindo']) {
             case 'auth':
@@ -158,3 +158,22 @@ if (isset($_POST['message']) && !empty($_POST['message'])) {
         }
     }
 }
+
+//   $adminUsername = $_POST['AdminUsername'];
+//   $adminUsername = "user response";
+//   $adminPassword = $_POST['AdminpPassword'];
+//   $adminPassword = "password response";
+
+//   // Perform any necessary operations with the received data
+
+//   // Prepare the response data
+//   $responseData = [
+//     'message' => 'Success',
+//     'data' => [
+//       'adminUsername' => $adminUsername,
+//       'adminPassword' => $adminPassword
+//     ]
+//   ];
+
+//   // Send the response back to the JavaScript code
+//   echo json_encode($responseData);
