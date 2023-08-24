@@ -11,14 +11,14 @@ class AdminAuthForm
 {
     private static $adminAuth = './adminAuth.json';
     protected $userNames;
-    private $response;
+    public $response = array();
 
-    public function __construct()
+    function __construct()
     {
         $this->refreshUserNames();
     }
 
-    public function authenticateUser(string $username, string $password)
+    function authenticateUser(string $username, string $password)
     {
         $authenticated = false;
         $checkPassword = '/^[A-Za-z0-9]+$/';
@@ -71,7 +71,7 @@ class AdminAuthForm
         return null;
     }
 
-    private function createUser($username, $password)
+    protected function createUser($username, $password)
     {
 
         $checkPassword = '/^[A-Za-z0-9]+$/';
@@ -81,7 +81,7 @@ class AdminAuthForm
                 $options = array('cost' => 10);
                 $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
                 $this->userNames[$username] = $derivedPassword;
-                $jsonSavefile = json_encode($this->userNames);
+                $jsonSavefile = json_encode($this->userNames,true);
                 file_put_contents(self::$adminAuth, $jsonSavefile);
                 $this->response['CreateUser'] = ['true'];
                 return true;
@@ -97,52 +97,41 @@ class AdminAuthForm
     }
 
 
-    private function refreshUserNames()
+    protected function refreshUserNames()
     {
         if (file_exists(self::$adminAuth)) {
             $this->response['SaveFile'] = ["The file " . self::$adminAuth . " exists."];
             $jsonfile = file_get_contents(self::$adminAuth, false);
-            $this->userNames = json_decode($jsonfile);
-        } else {
-            if (touch(self::$adminAuth)) {
-                $jsonfile = file_get_contents(self::$adminAuth, false);
-                $this->userNames = json_decode($jsonfile);
-                if (!isset($this->userNames['eds']) && empty($this->userNames['eds'])) {
-                    $this->userNames['eds'] = 'No1PassAdmin';
-                    $jsonSav1stAdmin = json_encode($this->userNames);
-                    file_put_contents(self::$adminAuth, $jsonSav1stAdmin);
-                }
-                $this->response['SaveFile'] = 'newfile created';
-            } else {
-                $this->response['SaveFile'] = "file couldn't be created \n username not saved";
-            }
-        }
+            $this->userNames = json_decode($jsonfile,true);
+        } else {}
     }
 
-    function getResponseData()
+    function getResponseData(): string
     {
-        $jsonresponse = json_encode($this->response);
-        // print_r("jsonresponse-{" . $jsonresponse . "} response-{" . $this->response);
-        return $jsonresponse;
+        // return $this->response;
+        return json_encode($this->response);
     }
 }
 
 
 $adminget = new AdminAuthForm();
+$data = json_decode($_POST['data'],true);
+if (isset($data['AdminPassword']) && !empty($data['AdminUsername'])) {
 
-if (isset($clientdata['AdminUsername']) && !empty($clientdata['AdminUsername'])) {
-    if ($adminget->authenticateUser($clientdata['AdminUsername'], $clientdata['AdminPassword'])) {
+    if ($adminget->authenticateUser($data['AdminUsername'], $data['AdminPassword'])) {
         $responseData = $adminget->getResponseData();
         echo $responseData;
+    } else {
+        echo "false";
     }
+} else {
+    echo "no response";
 }
 
-// }
-
-
-//   $adminUsername = $_POST['AdminUsername'];
+// $data = json_decode($_POST['data'],true);
+// //   $adminUsername = $_POST['AdminUsername'];
 //   $adminUsername = "user response";
-//   $adminPassword = $_POST['AdminpPassword'];
+// //   $adminPassword = $_POST['AdminPassword'];
 //   $adminPassword = "password response";
 
 //   // Perform any necessary operations with the received data
@@ -157,4 +146,5 @@ if (isset($clientdata['AdminUsername']) && !empty($clientdata['AdminUsername']))
 //   ];
 
 //   // Send the response back to the JavaScript code
-//   echo json_encode($responseData);
+// //   echo json_encode($data);
+// echo($data['AdminPassword']);

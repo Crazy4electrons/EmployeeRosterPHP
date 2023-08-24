@@ -37,7 +37,7 @@ function displayResponse(response) {
 function sendMessage() {
   let adminusername = document.getElementById('adminusername').value;
   let adminpassword = document.getElementById('adminpassword').value;
-  let message = { "AdminpPassword": adminpassword, "AdminUsername": adminusername };
+  let message = { "AdminPassword": adminpassword, "AdminUsername": adminusername };
   console.log(message);
 
   fetch('../classes/adminauth.php', {
@@ -45,7 +45,7 @@ function sendMessage() {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: 'message=' + encodeURIComponent(JSON.stringify(message))
+    body: 'data=' + encodeURIComponent(JSON.stringify(message))
   })
   .then(response => {
     if (response.ok) {
