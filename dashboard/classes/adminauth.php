@@ -18,7 +18,7 @@ class AdminAuthForm
         $this->refreshUserNames();
     }
 
-    function authenticateUser(string $username, string $password)
+    function authenticateUser(string $username, string $password):bool
     {
         $authenticated = false;
         $checkPassword = '/^[A-Za-z0-9]+$/';
@@ -81,7 +81,7 @@ class AdminAuthForm
                 $options = array('cost' => 10);
                 $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
                 $this->userNames[$username] = $derivedPassword;
-                $jsonSavefile = json_encode($this->userNames,true);
+                $jsonSavefile = json_encode($this->userNames);
                 file_put_contents(self::$adminAuth, $jsonSavefile);
                 $this->response['CreateUser'] = ['true'];
                 return true;
@@ -102,8 +102,22 @@ class AdminAuthForm
         if (file_exists(self::$adminAuth)) {
             $this->response['SaveFile'] = ["The file " . self::$adminAuth . " exists."];
             $jsonfile = file_get_contents(self::$adminAuth, false);
-            $this->userNames = json_decode($jsonfile,true);
-        } else {}
+            $this->userNames = json_decode($jsonfile, true);
+        } else {
+            if (touch(self::$adminAuth)) {
+                $jsonfile = file_get_contents(self::$adminAuth, false);
+                $this->userNames = json_decode($jsonfile);
+                if (!isset($this->userNames['eds']) && empty($this->userNames['eds'])) {
+                    if($this->createUser('eds','No1Passeds')){
+                    // $jsonSav1stAdmin = json_encode($this->userNames);
+                    // file_put_contents(self::$adminAuth, $jsonSav1stAdmin);
+                    }
+                }
+                $this->response['SaveFile'] = 'newfile created';
+            } else {
+                $this->response['SaveFile'] = "file couldn't be created \n username not saved";
+            }
+        }
     }
 
     function getResponseData(): string
@@ -115,14 +129,15 @@ class AdminAuthForm
 
 
 $adminget = new AdminAuthForm();
-$data = json_decode($_POST['data'],true);
+$data = json_decode($_POST['data'], true);
 if (isset($data['AdminPassword']) && !empty($data['AdminUsername'])) {
 
     if ($adminget->authenticateUser($data['AdminUsername'], $data['AdminPassword'])) {
         $responseData = $adminget->getResponseData();
         echo $responseData;
     } else {
-        echo "false";
+        
+       print_r($data);
     }
 } else {
     echo "no response";
