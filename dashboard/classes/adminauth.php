@@ -18,43 +18,44 @@ class AdminAuthForm
         $this->refreshUserNames();
     }
 
-    function authenticateUser(string $username, string $password):bool
+    function authenticateUser(string $username, string $password): bool
     {
-        $authenticated = false;
         $checkPassword = '/^[A-Za-z0-9]+$/';
-        $checkUsername = '/^i[a-z0-9_]+$/';
+        $checkUsername = '/^[a-z0-9_]+$/';
 
         if (preg_match($checkUsername, $username)) {
+            if ($this->userExists($username)) {
             if (preg_match($checkPassword, $password)) {
-                if ($this->userExists($username)) {
                     $storedPassword = $this->getUsersPassword($username);
                     if (password_verify($password, $storedPassword)) {
-                        $this->response['UserAuth'] = ['true'];
-                        $authenticated = true;
+                        $this->response['UserAuth'] = 'true';
+                        return true;
                     } else {
-                        $this->response['UserAuth'] = ['false'];
-                        $authenticated = false;
+                        $this->response['UserAuth'] = 'false';
+                        return false;
                     }
                 }
             }
         }
-
-        return $authenticated;
+        return false;
     }
 
     public function adminAddAdmin($username, $password, $adminUsername, $adminPassword)
     {
-        if (!$this->userExists($username)) {
-            if ($this->authenticateUser($adminUsername, $adminPassword)) {
-                $this->createUser($username, $password);
+        if ($this->authenticateUser($adminUsername, $adminPassword)) {
+            if (!$this->userExists($username)) {
+            $this->createUser($username, $password);
                 $this->response['UserCreateSuccess'] = "" . $username . " was created successfully";
+                return true;
             }
         }
+        return false;
     }
 
     function userExists(string $username)
     {
         if (isset($this->userNames[$username]) && !empty($this->userNames[$username])) {
+            $this->response['UserExists'] = "User does: " . $username; // Log error message
             return true;
         }
         $this->response['UserExists'] = "User does not exist: " . $username; // Log error message
@@ -75,7 +76,7 @@ class AdminAuthForm
     {
 
         $checkPassword = '/^[A-Za-z0-9]+$/';
-        $checkUsername = '/^i[a-z0-9_]+$/';
+        $checkUsername = '/^[a-z0-9]+$/';
         if (preg_match($checkUsername, $username)) {
             if (preg_match($checkPassword, $password)) {
                 $options = array('cost' => 10);
@@ -86,7 +87,6 @@ class AdminAuthForm
                 $this->response['CreateUser'] = ['true'];
                 return true;
             } else {
-
                 $this->response['CreateUser'] = ['false'];
                 return false;
             }
@@ -101,19 +101,16 @@ class AdminAuthForm
     {
         if (file_exists(self::$adminAuth)) {
             $this->response['SaveFile'] = ["The file " . self::$adminAuth . " exists."];
-            $jsonfile = file_get_contents(self::$adminAuth, false);
+            $jsonfile = file_get_contents(self::$adminAuth, true);
             $this->userNames = json_decode($jsonfile, true);
         } else {
             if (touch(self::$adminAuth)) {
-                $jsonfile = file_get_contents(self::$adminAuth, false);
-                $this->userNames = json_decode($jsonfile);
+                $this->response['SaveFile'] = "newfile created";
                 if (!isset($this->userNames['eds']) && empty($this->userNames['eds'])) {
-                    if($this->createUser('eds','No1Passeds')){
-                    // $jsonSav1stAdmin = json_encode($this->userNames);
-                    // file_put_contents(self::$adminAuth, $jsonSav1stAdmin);
+                    if ($this->createUser('eds', 'No1PassAdmin')) {
+                        $this->response['SaveFile'] .= " + default admin added";
                     }
                 }
-                $this->response['SaveFile'] = 'newfile created';
             } else {
                 $this->response['SaveFile'] = "file couldn't be created \n username not saved";
             }
@@ -136,11 +133,11 @@ if (isset($data['AdminPassword']) && !empty($data['AdminUsername'])) {
         $responseData = $adminget->getResponseData();
         echo $responseData;
     } else {
-        
-       print_r($data);
+        $responseData = $adminget->getResponseData();
+        echo $responseData;
     }
 } else {
-    echo "no response";
+    echo "empty post";
 }
 
 // $data = json_decode($_POST['data'],true);
