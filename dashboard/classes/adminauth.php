@@ -127,7 +127,7 @@ class AdminAuthForm
 
 $adminget = new AdminAuthForm();
 $data = json_decode($_POST['data'], true);
-if (isset($data['AdminPassword']) && !empty($data['AdminUsername'])) {
+if (isset($data['AdminUsename']) && !empty($data['AdminUsername'])) {
 
     if ($adminget->authenticateUser($data['AdminUsername'], $data['AdminPassword'])) {
         $responseData = $adminget->getResponseData();
@@ -137,26 +137,6 @@ if (isset($data['AdminPassword']) && !empty($data['AdminUsername'])) {
         echo $responseData;
     }
 } else {
-    echo "empty post";
+    print_r($data);
+    //  json_encode($response['message'] = "empty post");
 }
-
-// $data = json_decode($_POST['data'],true);
-// //   $adminUsername = $_POST['AdminUsername'];
-//   $adminUsername = "user response";
-// //   $adminPassword = $_POST['AdminPassword'];
-//   $adminPassword = "password response";
-
-//   // Perform any necessary operations with the received data
-
-//   // Prepare the response data
-//   $responseData = [
-//     'message' => 'Success',
-//     'data' => [
-//       'adminUsername' => $adminUsername,
-//       'adminPassword' => $adminPassword
-//     ]
-//   ];
-
-//   // Send the response back to the JavaScript code
-// //   echo json_encode($data);
-// echo($data['AdminPassword']);

@@ -44,6 +44,7 @@
             default:
                 echo "Theres an error in your url";
         }?>
+        
     <?php else :?>
         <b>no page specified</b>
     <?php endif ?>
