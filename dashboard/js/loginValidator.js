@@ -57,7 +57,7 @@ function evalinput(userName, userPass, dispBox, newEvent=false) {
     }
   });
 }
-function validateAtServer(form, userName, Password, authAdmin = false) {
+function validateAtServer(DivForm, userName, Password, authAdmin = false) {
   let adminusername = document.getElementById(userName).value;
   let adminpassword = document.getElementById(Password).value;
   let message = {
@@ -82,6 +82,7 @@ function validateAtServer(form, userName, Password, authAdmin = false) {
         throw new Error('XHR request failed with status: ' + response.status);
       }
     })
+    
     .then(responseText => {
       if (responseText.trim() !== '') {
         console.log(responseText);

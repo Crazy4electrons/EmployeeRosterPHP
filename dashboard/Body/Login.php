@@ -30,13 +30,13 @@
             </label>
         </div>
         <div id="adminpopup" class=" nodisplay">
-            <form class="Lform auth" id="adminform" action="/dashboard/index.php?redirect=login">
+            <div class="Lform auth" id="adminform">
                 <span>Admin Authentication</span>
                 <input type='text' name='Adminusername' Placeholder='Admin username' id='adminusername' required>
                 <input type='password' name='Adminpassword' placeholder='Admin password' id="adminpassword" require>
                 <p id="chckadmin"></p>
                 <button type="Button" onclick="validateAtServer('adminform','adminusername','adminpassword',true)">Validate</button>
-            </form>
+    </div>
             <button onclick="evalinput('Lusername','Lpassowrd','notice')" id="closebtn" type="button" class="btnB">
                 <i onclick="evalinput('Lusername','Lpassowrd','notice')" class="fab fa-mixer"></i>
             </button>
