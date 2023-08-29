@@ -27,7 +27,8 @@
     ?>
     <?php
     // include "nav";
-    if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
+    if (isset($_GET['redirect']) && !empty($_GET['redirect'])):?>
+    <?php
         switch ($_GET['redirect']) {
             case 'main':
                 require "Body/main.php";
@@ -42,14 +43,13 @@
                 break;
             default:
                 echo "Theres an error in your url";
-        }
-    } else {
-        echo "no page specified";
-    } ?><?php
-        require "./Footer/MainFooter.html";
-        ?>
+        }?>
+    <?php else :?>
+        <b>no page specified</b>
+    <?php endif ?>
+    <?php
+    require "./Footer/MainFooter.html";
+    echo"</body></html>";
+    ?>
 
 
-</body>
-
-</html>

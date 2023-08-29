@@ -1,7 +1,13 @@
 /*
 funtion is used to evaluate username and password
  */
-function evalinput(userName, userPass,dispBox) {
+function evalinput(userName, userPass, dispBox, newEvent=false) {
+  if (newEvent) {
+    chckuserName.removeEventListener("input");
+    chckuserPass.removeEventListener("input");
+  }else{
+    return;
+  }
   //filter user name
   let chckuserName = document.getElementById(userName);
   let chckuserPass = document.getElementById(userPass);
@@ -25,29 +31,30 @@ function evalinput(userName, userPass,dispBox) {
     } else {
       displayout.innerHTML = "";
     }
-    
+
   });
 
   //Check if password matches filters
   chckuserPass.addEventListener('input', function () {
-    if(displayout.value="Username Valid"){
-    let Passregex = /^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/;
-    if (chckuserPass.value.length > 0) {
-      if (chckuserPass.value.length >= 8) {
-        if (Passregex.test(chckuserPass.value)) {
-          displayout.style.color = "Green";
-          displayout.innerHTML = "Password Valid";
+    if (displayout.value = "Username Valid") {
+      let Passregex = /^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/;
+      if (chckuserPass.value.length > 0) {
+        if (chckuserPass.value.length >= 8) {
+          if (Passregex.test(chckuserPass.value)) {
+            displayout.style.color = "Green";
+            displayout.innerHTML = "Password Valid";
+          } else {
+            displayout.style.color = "Orange";
+            displayout.innerHTML = "Password must contain alphanumericals and atleast one symbol";
+          }
         } else {
-          displayout.style.color = "Orange";
-          displayout.innerHTML = "Password must contain alphanumericals and atleast one symbol";
+          displayout.style.color = "Red";
+          displayout.innerHTML = "Password must be atleast 8 characters long";
         }
       } else {
-        displayout.style.color = "Red";
-        displayout.innerHTML = "Password must be atleast 8 characters long";
+        displayout.innerHTML = "";
       }
-    } else {
-      displayout.innerHTML ="";
-    }}
+    }
   });
 }
 function validateAtServer(form, userName, Password, authAdmin = false) {
@@ -83,7 +90,8 @@ function validateAtServer(form, userName, Password, authAdmin = false) {
           console.dir(responseFin);
           if (authAdmin == true) {
             if (responseFin.AuthAdmin == true) {
-              document.getElementById(form).submit;
+              subMit = document.getElementById(form);
+              subMit.submit;
             } else {
               let attachmsg = document.getElementById(Password);
               attachmsg.insertAdjacentHTML('afterend',

@@ -28,9 +28,9 @@
     font-size: 1em;
 }
 .btnA:hover{
-box-shadow: inset 0px 0px 5px 2px rgba(236, 234, 234, 0.503),0px 0px 5px 2px rgba(100, 96, 96, 0.707);
+box-shadow: inset 0px 0px 5px 1px rgba(255, 255, 255, 0.618),0px 0px 5px 2px rgba(100, 96, 96, 0.707);
 color:antiquewhite;
-background-color:rgba(142, 193, 227, 0.964);
+background-color:rgba(13, 138, 222, 0.959);
 }
 .btnB{
     padding: 10px;

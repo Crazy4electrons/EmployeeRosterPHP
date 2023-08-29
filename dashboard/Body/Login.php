@@ -26,7 +26,7 @@
         </form>
         <div>
             <label>Don't have an account or cant access?
-                <button id="openbtn" class="btnA" type="button">then register or change password</button>
+                <button id="openbtn" onclick="evalinput('Adminusername','Adminpassword','chckadmin',true)" class="btnA" type="button" >then register or change password</button>
             </label>
         </div>
         <div id="adminpopup" class=" nodisplay">
@@ -34,10 +34,11 @@
                 <span>Admin Authentication</span>
                 <input type='text' name='Adminusername' Placeholder='Admin username' id='adminusername' required>
                 <input type='password' name='Adminpassword' placeholder='Admin password' id="adminpassword" require>
-                <button type="Button" onclick="validateAtServe('adminform','adminusername','adminpassword',true)">Validate</button>
+                <p id="chckadmin"></p>
+                <button type="Button" onclick="validateAtServer('adminform','adminusername','adminpassword',true)">Validate</button>
             </form>
-            <button id="closebtn" type="button" class="btnB">
-                <i class="fab fa-mixer"></i>
+            <button onclick="evalinput('Lusername','Lpassowrd','notice')" id="closebtn" type="button" class="btnB">
+                <i onclick="evalinput('Lusername','Lpassowrd','notice')" class="fab fa-mixer"></i>
             </button>
         </div>
     <?php endif ?>
