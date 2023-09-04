@@ -7,7 +7,7 @@ function validateAtServer(userName, Password) {
   };
   console.log(message);
 
-  fetch('../classes/adminauth.php', {
+  fetch('dashboard/classes/adminauth.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'

@@ -95,6 +95,9 @@ class AdminAuthForm
             return false;
         }
     }
+    Protected function removeUser($username){
+        
+    }
 
 
     protected function refreshUserNames()

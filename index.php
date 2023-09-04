@@ -1,4 +1,3 @@
-
 <?php
 
 $title = "";
@@ -12,7 +11,9 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
             $BodyDisplay = "dashboard/Body/main.php";
             break;
         case 'login':
+            $headDisplay = "dashboard/headers/Mheader.html";
             $BodyDisplay = "dashboard/Body/Login.html";
+            $footerDisplay = "dashboard/Footer/MainFooter.html";
             break;
         case 'register':
             $BodyDisplay = "dashboard/Body/register.html";
@@ -51,12 +52,16 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <!-- <?php 
-    // require $headDisplay ?> -->
+    <?php
+    require $headDisplay
+    ?>
     <!-- include "nav"; -->
-    <?php require $BodyDisplay ?>
-    <?php 
-    // require $footerDisplay ?>
+    <?php
+    require $BodyDisplay
+    ?>
+    <?php
+    require $footerDisplay
+    ?>
 </body>
 
 
