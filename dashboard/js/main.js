@@ -1,2 +1,5 @@
+// main.js
 
-document.onload(evalinput());
+window.addEventListener("load", function() {
+    evalinput()
+});  

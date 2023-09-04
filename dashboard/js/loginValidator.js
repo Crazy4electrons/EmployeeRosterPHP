@@ -4,7 +4,7 @@ function validateAtServer(userName, Password) {
   let message = {
     "AdminPassword": adminpassword,
     "AdminUsername": adminusername,
-    };
+  };
   console.log(message);
 
   fetch('../classes/adminauth.php', {
@@ -21,44 +21,19 @@ function validateAtServer(userName, Password) {
         throw new Error('XHR request failed with status: ' + response.status);
       }
     })
-    
     .then(responseText => {
       if (responseText.trim() !== '') {
         console.log(responseText);
         try {
           let responseFin = JSON.parse(responseText);
           console.dir(responseFin);
-          if (responseFin.UserAuth) {
-            document.getElementById("chckadmin").innerHTML ="true";
-          }else{
-            document.getElementById("chckadmin").innerHTML ="false";
-          }
-
-
-
-
-
-
-          // if (authAdmin == true) {
-          //   if (responseFin.AuthAdmin == true) {
-          //     subMit = document.getElementById(form);
-          //     subMit.submit;
-          //   } else {
-          //     let attachmsg = document.getElementById(Password);
-          //     attachmsg.insertAdjacentHTML('afterend',
-          //       '<div>Athentication false</div>'
-          //     );
-          //   }
-          // } else {
-          //   if (responseFin.UserAuth == true) {
-          //     document.getElementById(form).submit;
-          //   } else {
-          //     let attachmsg = document.getElementById(Password);
-          //     attachmsg.insertAdjacentHTML('afterend',
-          //       '<div>Athentication false</div>'
-          //     );
-          //   }
-          // }
+          if (responseFin.UserAuth == "true") {
+            let chkadmin = document.querySelector(".chckadmin")
+            chkadmin.innerHTML = "true";
+          } else {
+            let chkadmin = document.querySelector(".chckadmin")
+            chkadmin.innerHTML = "false";
+          };
         } catch (error) {
           console.error('An error has occurred:', error);
         }

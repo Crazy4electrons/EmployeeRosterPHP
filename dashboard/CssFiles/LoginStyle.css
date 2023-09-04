@@ -1,56 +1,34 @@
-.Lform{
+.Lform {
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
     margin: 2em 4em;
     padding: 1em;
-    box-shadow:0px 0px 10px 2px rgb(38, 36, 46);
+    box-shadow: 0px 0px 10px 2px rgb(38, 36, 46);
     border-radius: 1em;
-    background-color: rgba(232, 11, 147, 0.224);
+    background-color: rgba(237, 233, 226, 0.522);
+    
+    font-family: cursive;
 }
-.Lform input{
+
+.Lform input {
     margin: 1em;
     padding: 0.4em;
-    border: 5px solid white;
-    box-shadow:0px 0px 5px 0px rgb(38, 36, 46);
+    border: none
+        /*5px solid white*/
+    ;
+    box-shadow: inset 0px 0px 10px 2px rgba(237, 233, 226, 0.522);;
     border-radius: 1em;
-    background-color:white;
+    background-color: white;
+    outline: none;
+    /* box-shadow: none; */
 }
 
-.btnA{
-    border:none;
-    background-color:rgba(20, 158, 212, 0.774);
-    color:antiquewhite;
-    box-shadow: 0px 0px 5px 2px rgba(59, 58, 58, 0.707);
-    border-radius:1em;
-    padding: 1em;
-    font-size: 1em;
+.Lform input::placeholder {
+    background-color: rgba(255, 255, 255, 0.811);
+    box-shadow: inset 0px 0px 5px 1px rgba(255, 255, 255, 0.868)
 }
-.btnA:hover{
-box-shadow: inset 0px 0px 5px 1px rgba(255, 255, 255, 0.618),0px 0px 5px 2px rgba(100, 96, 96, 0.707);
-color:antiquewhite;
-background-color:rgba(13, 138, 222, 0.959);
-}
-.btnB{
-    padding: 10px;
-    border:none;
-    border-radius: 5px;
-    transition: background-color 0.2s ease,box-shadow 0.3s ease-in;
-    position: absolute;
-    top: 1em;
-    right: 1em;;
-    background: none;
-    color: aliceblue;
-    font-size: 25px;
-
-}
-.btnB:hover{
-    background-color:rgba(157, 13, 13, 0.503);
-    box-shadow: 0px 0px 5px 2px rgba(22, 21, 21, 0.707);
-}
-
-
 
 #adminpopup {
     position: absolute;
@@ -61,28 +39,40 @@ background-color:rgba(13, 138, 222, 0.959);
     justify-content: center;
     align-items: center;
     background-color: rgba(39, 37, 37, 0.651);
-    backdrop-filter: blur(2px);
-    border-radius:1em;
-    box-shadow:inset 0px 0px 15px 2px rgba(89, 87, 87, 0.556), 0px 0px 15px 7px rgb(255 255 255 / 64%);
+
+    border-radius: 1em;
+    box-shadow: inset 0px 0px 15px 2px rgba(89, 87, 87, 0.556), 0px 0px 15px 7px rgb(255 255 255 / 64%);
     z-index: 6;
     width: 80%;
     height: 80%;
     margin-top: 5%;
-    transition: transform 0.3s ease-in,opacity 0.5s ease-in;
+    transition: transform 0.3s ease-in, opacity 0.8s ease-in, backdrop-filter 3s ease-in;
 }
-.nodisplay{
+.auth {
+    padding: 2em;
+    background-color: rgba(237, 233, 226, 1);
+
+}
+
+.nodisplay {
     transform: scale(0%);
     opacity: 0;
+    backdrop-filter: blur(0);
 }
-.visible{
+
+.visible {
     transform: scale(100%);
     opacity: 1;
+    backdrop-filter: blur(3px)
 }
-.auth{
-    padding: 2em;
-    background-color:rgba(12, 158, 255, 1);
-    
-}
-#notice{
+
+
+
+.UserLog {
     word-wrap: break-word;
+    background-color:white;
+    margin: 1em;
+    padding: 1em;
+    border-radius:1em;
+    box-shadow: inset 0px 0px 7px 3px rgba(237, 233, 226, 0.522);
 }

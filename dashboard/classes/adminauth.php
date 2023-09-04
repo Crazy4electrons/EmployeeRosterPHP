@@ -12,7 +12,6 @@ class AdminAuthForm
     private static $adminAuth = './adminAuth.json';
     protected $userNames;
     public $response = array();
-
     function __construct()
     {
         $this->refreshUserNames();
@@ -20,23 +19,24 @@ class AdminAuthForm
 
     function authenticateUser(string $username, string $password): bool
     {
-        $checkPassword = '/^[A-Za-z0-9]+$/';
-        $checkUsername = '/^[a-z0-9_]+$/';
+        $checkPassword = '/^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
+        $checkUsername = '/^(?=.+[0-9])[a-zA-Z0-9]+$/';
 
         if (preg_match($checkUsername, $username)) {
             if ($this->userExists($username)) {
             if (preg_match($checkPassword, $password)) {
                     $storedPassword = $this->getUsersPassword($username);
                     if (password_verify($password, $storedPassword)) {
-                        $this->response['UserAuth'] = 'true';
+                        $this->response['UserAuth'] = "true";
                         return true;
                     } else {
-                        $this->response['UserAuth'] = 'false';
+                        $this->response['UserAuth'] = "false";
                         return false;
                     }
                 }
             }
         }
+        $this->response['UserAuth'] = "false";
         return false;
     }
 
@@ -75,8 +75,8 @@ class AdminAuthForm
     protected function createUser($username, $password)
     {
 
-        $checkPassword = '/^[A-Za-z0-9]+$/';
-        $checkUsername = '/^[a-z0-9]+$/';
+        $checkPassword = '/^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
+        $checkUsername = '/^(?=.+[0-9])[a-zA-Z0-9]+$/';
         if (preg_match($checkUsername, $username)) {
             if (preg_match($checkPassword, $password)) {
                 $options = array('cost' => 10);
@@ -84,14 +84,14 @@ class AdminAuthForm
                 $this->userNames[$username] = $derivedPassword;
                 $jsonSavefile = json_encode($this->userNames);
                 file_put_contents(self::$adminAuth, $jsonSavefile);
-                $this->response['CreateUser'] = ['true'];
+                $this->response['CreateUser'] = 'true';
                 return true;
             } else {
-                $this->response['CreateUser'] = ['false'];
+                $this->response['CreateUser'] = 'false';
                 return false;
-            }
+            } 
         } else {
-            $this->response['CreateUser'] = ['false'];
+            $this->response['CreateUser'] = 'false';
             return false;
         }
     }
@@ -100,14 +100,14 @@ class AdminAuthForm
     protected function refreshUserNames()
     {
         if (file_exists(self::$adminAuth)) {
-            $this->response['SaveFile'] = ["The file " . self::$adminAuth . " exists."];
+            $this->response['SaveFile'] = "The file " . self::$adminAuth . " exists.";
             $jsonfile = file_get_contents(self::$adminAuth, true);
             $this->userNames = json_decode($jsonfile, true);
         } else {
             if (touch(self::$adminAuth)) {
                 $this->response['SaveFile'] = "newfile created";
-                if (!isset($this->userNames['eds']) && empty($this->userNames['eds'])) {
-                    if ($this->createUser('eds', 'No1PassAdmin')) {
+                if (!isset($this->userNames['eds1st']) && empty($this->userNames['eds1st'])) {
+                    if ($this->createUser('eds1st', 'No1Pass@dmin')) {
                         $this->response['SaveFile'] .= " + default admin added";
                     }
                 }
@@ -127,7 +127,7 @@ class AdminAuthForm
 
 $adminget = new AdminAuthForm();
 $data = json_decode($_POST['data'], true);
-if (isset($data['AdminUsename']) && !empty($data['AdminUsername'])) {
+if (isset($data['AdminUsername']) && !empty($data['AdminUsername'])) {
 
     if ($adminget->authenticateUser($data['AdminUsername'], $data['AdminPassword'])) {
         $responseData = $adminget->getResponseData();
