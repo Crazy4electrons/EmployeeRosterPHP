@@ -1,5 +1,5 @@
 <link id="logonStyle" rel="stylesheet" href="dashboard/CssFiles/LoginStyle.css">
-<form class="Lform" id="loginForm" method="POST" action="./checkLoginServer.php">
+<form class="Lform" id="loginForm" method="POST" action="/dashboard/">
     <h3>Login</h3>
     <input class="UserToFilter" type="text" name="username"
         placeholder="username" id="Lusername" required>
@@ -21,7 +21,7 @@
     </label>
 </div>
 <div id="adminpopup" class=" nodisplay popUp">
-    <div class="Lform auth" id="adminform">
+    <form class="Lform auth" id="adminform"  method="POST" action="./index.php?redirect=register"">
         <span>Admin Authentication</span>
         <input type='text' class="adminCheck" name='Adminusername'
             Placeholder='Admin username' id='adminUsername' required>
@@ -30,11 +30,12 @@
         <p class="chckadmin UserLog"></p>
         <button type="Button" class="btnA"
             onclick="validateAtServer('adminUsername','adminPassword')">Validate</button>
-    </div>
+    </form>
     <button type="button" onclick="evalinput()" class="exitbtn btnB closeBtn">
         <i class="fab fa-mixer"></i>
     </button>
 </div>
 <script src="./dashboard/js/listeners.js" async="false" crossorigin="anonymous"></script>
-<script src="./dashboard/js/loginValidator.js" async="false" crossorigin="anonymous"></script>
+<script src="./dashboard/js/loginValidator.js" async="false"
+    crossorigin="anonymous"></script>
 <script src="./dashboard/js/main.js" async="false" crossorigin="anonymous"></script>

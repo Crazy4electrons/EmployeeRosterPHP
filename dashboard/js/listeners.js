@@ -38,7 +38,7 @@ function evalinput(userName = ".UserToFilter", userPass = ".PassToFilter", dispB
 
   function checkPasswordValidity() {
     if (displayoutValidPass == "Username Valid") {
-      let Passregex = /^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/;
+      let Passregex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/;
       if (chckuserPass.value.length > 0) {
         if (chckuserPass.value.length >= 8) {
           if (Passregex.test(chckuserPass.value)) {

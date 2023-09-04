@@ -28,8 +28,15 @@ function validateAtServer(userName, Password) {
           let responseFin = JSON.parse(responseText);
           console.dir(responseFin);
           if (responseFin.UserAuth == "true") {
-            let chkadmin = document.querySelector(".chckadmin")
-            chkadmin.innerHTML = "true";
+
+            let chkadmin = document.querySelector(".chckadmin");
+            if (chkadmin.parentElement.tagName == "FORM") {
+              let parentchkadmin = chkadmin.parentElement;
+              parentchkadmin.submit();
+              console.log("true on submit");
+            }else{
+              chkadmin.innerHTML = "false on submit: User doesn,t exist";
+            }
           } else {
             let chkadmin = document.querySelector(".chckadmin")
             chkadmin.innerHTML = "false";

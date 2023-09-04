@@ -11,21 +11,26 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
             $BodyDisplay = "dashboard/Body/main.php";
             break;
         case 'login':
-            $headDisplay = "dashboard/headers/Mheader.html";
+            $title = "Log-in";
+            $imgTitle = "dashboard/images/logo.png";
             $BodyDisplay = "dashboard/Body/Login.html";
-            $footerDisplay = "dashboard/Footer/MainFooter.html";
             break;
-        case 'register':
-            $BodyDisplay = "dashboard/Body/register.html";
+            case 'register':
+                $title = "Register";
+                $imgTitle = "dashboard/images/logo.png";
+            $BodyDisplay = "dashboard/Body/register.php";
             break;
         default:
-            echo "Theres an error in your url";
+        $title = "error";
+            $BodyDisplay ="<div class=\"ErrorLogin\">Theres an error in your url <br/> <b style=\"font-size:5em;\">404</b></div>";
     }
-} else {
-    $title = "Test";
-    $imgTitle = "dashboard/images/logo.png";
+    $footerDisplay = "dashboard/Footer/MainFooter.html";
     $headDisplay = "dashboard/headers/Mheader.html";
+} else {
+    $title = "Log-in";
+    $imgTitle = "dashboard/images/logo.png";
     $BodyDisplay = "dashboard/index.php";
+    $headDisplay = "dashboard/headers/Mheader.html";
     $footerDisplay = "dashboard/Footer/MainFooter.html";
 } ?>
 <!DOCTYPE html>
@@ -56,8 +61,14 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     require $headDisplay
     ?>
     <!-- include "nav"; -->
+
     <?php
-    require $BodyDisplay
+    if ($title == "error") {
+        echo $BodyDisplay;
+    }else{
+        require $BodyDisplay;
+    }
+    
     ?>
     <?php
     require $footerDisplay

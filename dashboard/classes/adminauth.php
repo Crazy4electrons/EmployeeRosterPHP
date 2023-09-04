@@ -12,8 +12,11 @@ class AdminAuthForm
     private static $adminAuth = './adminAuth.json';
     protected $userNames;
     public $response = array();
-    function __construct()
+    function __construct($pathToFile = null)
     {
+        if ($pathToFile != null) {
+            self::$adminAuth = $pathToFile;
+        }
         $this->refreshUserNames();
     }
 
@@ -24,7 +27,7 @@ class AdminAuthForm
 
         if (preg_match($checkUsername, $username)) {
             if ($this->userExists($username)) {
-            if (preg_match($checkPassword, $password)) {
+                if (preg_match($checkPassword, $password)) {
                     $storedPassword = $this->getUsersPassword($username);
                     if (password_verify($password, $storedPassword)) {
                         $this->response['UserAuth'] = "true";
@@ -40,11 +43,11 @@ class AdminAuthForm
         return false;
     }
 
-    public function adminAddAdmin($username, $password, $adminUsername, $adminPassword)
+    protected function adminAddAdmin($username, $password, $adminUsername, $adminPassword)
     {
         if ($this->authenticateUser($adminUsername, $adminPassword)) {
             if (!$this->userExists($username)) {
-            $this->createUser($username, $password);
+                $this->createUser($username, $password);
                 $this->response['UserCreateSuccess'] = "" . $username . " was created successfully";
                 return true;
             }
@@ -89,14 +92,23 @@ class AdminAuthForm
             } else {
                 $this->response['CreateUser'] = 'false';
                 return false;
-            } 
+            }
         } else {
             $this->response['CreateUser'] = 'false';
             return false;
         }
     }
-    Protected function removeUser($username){
-        
+    protected function removeUser($username)
+    {
+        if ($this->userExists($username)) {
+            unset($this->userNames[$username]);
+            $this->response['deleteUser'] = 'true';
+            return true;
+        }else{
+            $this->response['deleteUser'] = 'false';
+            return false;
+
+        }
     }
 
 
