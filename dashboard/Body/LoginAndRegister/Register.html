@@ -1,13 +1,11 @@
+
+
 <link id="logonStyle" rel="stylesheet" href="dashboard/CssFiles/LoginStyle.css">
-<form class="Lform" id="registerForm" method="POST"
-    action="./checkLoginServer.php/?register=true">
-    <p>Register</p> <input class="UserToFilter" type="text" name="username"
-        placeholder="username" id="Lusername" required>
-    <input class="PassToFilter" type="password" name="password"
-        placeholder="Password" id="Lpassword" required>
+<form class="Lform" id="registerForm" method="POST" action="./checkLoginServer.php/?register=true">
+    <p>Register</p> <input class="UserToFilter" type="text" name="username" placeholder="username" id="Lusername" required>
+    <input class="PassToFilter" type="password" name="password" placeholder="Password" id="Lpassword" required>
     <span class="LogToUser UserLog"></span>
-    <button type="Button" class="btnA"
-        onclick="validateAtServer('Lusername','Lpassowrd')">Submit</button>
+    <button type="Button" class="btnA" onclick="validateAtServer('Lusername','Lpassowrd')">Submit</button>
 </form>
 <div id="noPass">
     <p>Already have an account?

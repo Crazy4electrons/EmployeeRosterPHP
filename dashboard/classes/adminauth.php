@@ -22,7 +22,7 @@ class AdminAuthForm
 
     function authenticateUser(string $username, string $password): bool
     {
-        $checkPassword = '/^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
+        $checkPassword = '/^(?=.*[a-zA-Z])(?=.[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
         $checkUsername = '/^(?=.+[0-9])[a-zA-Z0-9]+$/';
 
         if (preg_match($checkUsername, $username)) {
@@ -140,18 +140,4 @@ class AdminAuthForm
 }
 
 
-$adminget = new AdminAuthForm();
-$data = json_decode($_POST['data'], true);
-if (isset($data['AdminUsername']) && !empty($data['AdminUsername'])) {
 
-    if ($adminget->authenticateUser($data['AdminUsername'], $data['AdminPassword'])) {
-        $responseData = $adminget->getResponseData();
-        echo $responseData;
-    } else {
-        $responseData = $adminget->getResponseData();
-        echo $responseData;
-    }
-} else {
-    print_r($data);
-    //  json_encode($response['message'] = "empty post");
-}
