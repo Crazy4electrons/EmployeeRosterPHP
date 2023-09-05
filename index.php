@@ -8,17 +8,17 @@ $footerDisplay = "";
 if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     switch ($_GET['redirect']) {
         case 'main':
-            $BodyDisplay = "dashboard/Body/main.php";
+            $BodyDisplay = "dashboard/Body/LoginAndRegister/main.php";
             break;
         case 'login':
-            $title = "Log-in";
+            $title = "Login";
             $imgTitle = "dashboard/images/logo.png";
-            $BodyDisplay = "dashboard/Body/Login.html";
+            $BodyDisplay = "dashboard/Body/LoginAndRegister/Login.html";
             break;
             case 'register':
                 $title = "Register";
                 $imgTitle = "dashboard/images/logo.png";
-            $BodyDisplay = "dashboard/Body/register.php";
+            $BodyDisplay = "dashboard/Body/LoginAndRegister/register.php";
             break;
         default:
         $title = "error";
