@@ -15,8 +15,8 @@ class DBaccess
     protected static $isCalled = false;
     protected $Hostname = 'localhost';
     protected $Apassword = 'N0@dminP@ss';
-    private $Database = 'MyFirstDB';
     protected $DBuserNames;
+    private $Database = 'MyFirstDB';
     public $Ausername = 'Admin';
     public $tableName = 'userAdmins';
     public $DBConnect;
@@ -32,9 +32,11 @@ class DBaccess
     public function __construct(string $userNameTable = null, $options = ['Ausername' => null, 'Apassuser' => null, 'Hostname' => null, '$Database' => null])
     {
         /**
-         * if class is start all values must be set before hand otherwise it will use default values and function needs to _destruct 
+         * if class is start all values must be set before hand 
+         * otherwise it will use default values and function needs to _destruct 
          * before values can be modified.
-         * @param __destruct is call at end of the php script or if you use call_destruct() methode
+         * @param __destruct is call at end of the php script or 
+         * if you use call_destruct() methode
          */
         if (!self::$isCalled) {
             foreach ($options as $key => $value) {
@@ -75,9 +77,11 @@ class DBaccess
     {
         if (self::$isCalled) {
             if ($this->DBConnect != null) {
+                $this->closeConnection();
                 unset($this->DBConnect);
             }
-            $responseText['initialize'] = 'empty';
+            unset($this->responseText);
+            $this->responseText['initialize'] = 'empty';
             self::$isCalled = false;
         }
     }
@@ -142,9 +146,9 @@ class DBaccess
     {
         $sql = "SELECT COUNT(*) AS 'count'
         FROM " . $this->tableName . "
-        WHERE username = ".$username.";";
-        $SendDB = $this->DBConnect->prepare($sql);
+        WHERE username = " . $username . ";";
         try {
+            $SendDB = $this->DBConnect->prepare($sql);
             $SendDB->execute();
         } catch (PDOException $error) {
             echo $error;
@@ -165,10 +169,9 @@ class DBaccess
     {
         $sql = "SELECT password
             FROM " . $this->tableName . "
-            WHERE username = :username;";
-        $SendDB = $this->DBConnect->prepare($sql);
-        try {
-            $SendDB->bindValue(':username', $username);
+            WHERE username = ".$username.";";
+            try {
+            $SendDB = $this->DBConnect->prepare($sql);
             $SendDB->execute();
         } catch (PDOException $error) {
             echo $error;
@@ -193,8 +196,8 @@ class DBaccess
         $options = array('cost' => 10);
         $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
         $sql = "INSERT INTO " . $this->tableName . " (username,password)
-            VALUES (:username, :password)
-            ON DUPLICATE KEY UPDATE username=:username;";
+            VALUES (".$username.",".$derivedPassword.")
+            ON DUPLICATE KEY UPDATE username=".$username.";";
         $sendDB = $this->DBConnect->prepare($sql);
         try {
             $sendDB->bindValue(':username', $username);
@@ -216,7 +219,7 @@ class DBaccess
      * @param string $newPassword The new password for the user.
      * @return bool Returns true if the password was updated successfully, false otherwise.
      */
-    public function updateUserPassword($username, $password, $newPassword)
+    public function updateUserPassword($username, $password, $newPassword):bool
     {
         $checkPassword = '/^(?=.*[a-zA-Z])(?=.[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
 
@@ -227,27 +230,21 @@ class DBaccess
             if (password_verify($password, $storedPassword)) {
                 if (preg_match($checkPassword, $newPassword)) {
 
-                    $stmt = "UPDATE users SET password = ".$newPassword." WHERE id =".$username.";";
-                    
+                    $stmt = "UPDATE users SET password = " . $newPassword . " WHERE id =" . $username . ";";
+
                     // Execute the update statement
                     try {
                         //code...
                         $SendDB = $this->DBConnect->prepare($stmt);
                         $SendDB->execute();
-                        if($sendDB->rowCount()>0){
-                            echo 'Password updated successfully.';
-        } else {
-            echo 'No user found with the specified ID.';
-        }
-    } catch (PDOException $e) {
-        echo 'Error: ' . $e->getMessage();
+                        if ($SendDB->rowCount() > 0) {
+                             $this->responseText['UpdatePassword'] = "Password was updated successfully";
+                        } else {
+                            $this->responseText['UpdatePassword'] = "No user found with the specified ID.";
                         }
-                    } catch (PDOException $th) {
-                        echo $th;
+                    } catch (PDOException $e) {
+                        echo 'Error: ' . $e->getMessage();
                     }
-
-
-                    $this->responseText['UpdatePassword'] = "Password was updated successfully";
                     return true;
                 } else {
                     $this->responseText['UpdatePassword'] = "Password does not meet requirements";
