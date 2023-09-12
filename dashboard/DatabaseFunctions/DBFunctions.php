@@ -142,12 +142,10 @@ class DBaccess
      * @param string $username The username to check.
      * @return bool Returns true if the user exists, false otherwise.
      */
-    public function userExists(string $username)
+    public function userExists(string $username):bool
     {
         $sql = "SELECT COUNT(*) AS 'count'
         FROM " . $this->tableName . "
-        WHERE username = " . $username . ";";
-        $SendDB = $this->DBConnect->prepare($sql);
         WHERE username = " . $username . ";";
         try {
             $SendDB = $this->DBConnect->prepare($sql);
@@ -170,7 +168,7 @@ class DBaccess
     protected function getUsersPassword($username)
     {
         $sql = "SELECT password
-            FROM " . $this->tableName . "
+            FROM " .$this->tableName. "
             WHERE username = ".$username.";";
             try {
             $SendDB = $this->DBConnect->prepare($sql);
