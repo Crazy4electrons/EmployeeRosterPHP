@@ -142,7 +142,7 @@ class DBaccess
     {
         $sql = "SELECT COUNT(*) AS 'count'
         FROM " . $this->tableName . "
-        WHERE username = ".$username.";";
+        WHERE username = " . $username . ";";
         $SendDB = $this->DBConnect->prepare($sql);
         try {
             $SendDB->execute();
@@ -227,24 +227,22 @@ class DBaccess
             if (password_verify($password, $storedPassword)) {
                 if (preg_match($checkPassword, $newPassword)) {
 
-                    $stmt = "UPDATE users SET password = ".$newPassword." WHERE id =".$username.";";
-                    
+                    $stmt = "UPDATE users SET password = " . $newPassword . " WHERE id =" . $username . ";";
+
                     // Execute the update statement
                     try {
                         //code...
                         $SendDB = $this->DBConnect->prepare($stmt);
                         $SendDB->execute();
-                        if($sendDB->rowCount()>0){
+                        if ($SendDB->rowCount() > 0) {
                             echo 'Password updated successfully.';
-        } else {
-            echo 'No user found with the specified ID.';
-        }
-    } catch (PDOException $e) {
-        echo 'Error: ' . $e->getMessage();
+                        } else {
+                            echo 'No user found with the specified ID.';
                         }
-                    } catch (PDOException $th) {
-                        echo $th;
+                    } catch (PDOException $e) {
+                        echo 'Error: ' . $e->getMessage();
                     }
+
 
 
                     $this->responseText['UpdatePassword'] = "Password was updated successfully";
@@ -272,7 +270,7 @@ class DBaccess
      * @param array|null $unique_keys An array of unique key column names.
      * @return bool Returns true if the table is created successfully, false otherwise.
      */
-    public function create_table(string $table_name, $columns, $primary_key = null, $unique_keys = null)
+    function create_table(string $table_name, $columns, $primary_key = null, $unique_keys = null)
     {
         $create_table_sql = "CREATE TABLE $table_name (";
         foreach ($columns as $column) {
