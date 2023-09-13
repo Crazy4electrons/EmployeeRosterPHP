@@ -15,7 +15,6 @@ class DBaccess
     protected static $isCalled = false;
     protected $Hostname = 'localhost';
     protected $Apassword = 'N0@dminP@ss';
-    protected $DBuserNames;
     private $Database = 'MyFirstDB';
     public $Ausername = 'Admin';
     public $tableName = 'userAdmins';
@@ -39,6 +38,7 @@ class DBaccess
          * if you use call_destruct() methode
          */
         if (!self::$isCalled) {
+            $this->Ausername = $options['Ausername'] ??;
             foreach ($options as $key => $value) {
                 if ($value != null) {
                     switch ($key) {
@@ -142,11 +142,11 @@ class DBaccess
      * @param string $username The username to check.
      * @return bool Returns true if the user exists, false otherwise.
      */
-    public function userExists(string $username):bool
+    public function userExists(string $username): bool
     {
         $sql = "SELECT COUNT(*) AS 'count'
-        FROM " . $this->tableName . "
-        WHERE username = " . $username . ";";
+        FROM $this->tableName
+        WHERE username = $username;";
         try {
             $SendDB = $this->DBConnect->prepare($sql);
             $SendDB->execute();
@@ -165,25 +165,26 @@ class DBaccess
      * @param string $username The username to retrieve the password for.
      * @return string|null Returns the stored password if the user exists, null otherwise.
      */
-    protected function getUsersPassword($username)
+    protected function getUsersPassword($username): string
     {
+
         $sql = "SELECT password
-            FROM " .$this->tableName. "
-            WHERE username = ".$username.";";
-            try {
+            FROM  $this->tableName
+            WHERE username = $username;";
+        try {
             $SendDB = $this->DBConnect->prepare($sql);
             $SendDB->execute();
         } catch (PDOException $error) {
             echo $error;
         }
-        $row = $SendDB->fetch(PDO::FETCH_ASSOC);
-        $password = $row['password'];
-
-        return $password;
+        if ($SendDB->rowCount() > 0) {
+            $row = $SendDB->fetch(PDO::FETCH_ASSOC);
+            $password = $row['password'];
+            return $password;
+        } else {
+            return false;
+        }
     }
-
-    // public function updateUserPassword($username, $password, $newPassword)
-
     /**
      * Creates a new user with the provided username and password.
      *
@@ -193,24 +194,50 @@ class DBaccess
      */
     public function createUser($username, $password)
     {
-        $options = array('cost' => 10);
-        $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-        $sql = "INSERT INTO " . $this->tableName . " (username,password)
-            VALUES (".$username.",".$derivedPassword.")
-            ON DUPLICATE KEY UPDATE username=".$username.";";
-        $sendDB = $this->DBConnect->prepare($sql);
+        $checkUsername = '/^(?=.*[a-zA-Z])(?=.[0-9])[a-zA-Z0-9!@#$%^&*]+$/';
+        $checkPassword = '/^(?=.*[a-zA-Z])(?=.[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
+        if (preg_match($checkUsername, $username)) {
+            if (preg_match($checkPassword, $password)) {
+                $options = array('cost' => 10);
+                $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
+                $sql = "INSERT INTO $this->tableName  (username,password)
+            VALUES ($username, $derivedPassword)
+            ON DUPLICATE KEY UPDATE username = $username;";
+                $sendDB = $this->DBConnect->prepare($sql);
+                try {
+                    $sendDB->bindValue(':username', $username);
+                    $sendDB->bindValue(':password', $derivedPassword);
+                    $sendDB->execute();
+                    return true;
+                } catch (PDOException $error) {
+                    echo $error;
+                }
+                $this->responseText['createUser'] = "User created successfully";
+                return false;
+            } else {
+                $this->responseText['createUser'] = "user password is not secure enough";
+            }
+        }else {
+            $this->responseText['createUser'] = "username is must contain alphanumercial";
+        }
+    }
+    function removeUser($username): bool
+    {
+        $sql = "DELETE FROM $this->tableName WHERE id = $username;";
+        $SendDB = $this->DBConnect->prepare($sql);
         try {
-            $sendDB->bindValue(':username', $username);
-            $sendDB->bindValue(':password', $derivedPassword);
-            $sendDB->execute();
+            $SendDB->execute();
+        } catch (PDOException $th) {
+            echo $th;
+        }
+        if ($SendDB->rowCount() > 0) {
+            $this->responseText['removeUser'] = "User has successfully been removed";
             return true;
-        } catch (PDOException $error) {
-            echo $error;
+        } else {
+            $this->responseText['removeUser'] = "User has  been removed";
             return false;
         }
     }
-
-
     /**
      * Updates a user's password in the admin authentication system.
      *
@@ -219,7 +246,7 @@ class DBaccess
      * @param string $newPassword The new password for the user.
      * @return bool Returns true if the password was updated successfully, false otherwise.
      */
-    public function updateUserPassword($username, $password, $newPassword):bool
+    public function updateUserPassword($username, $password, $newPassword): bool
     {
         $checkPassword = '/^(?=.*[a-zA-Z])(?=.[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
 
@@ -229,16 +256,14 @@ class DBaccess
             $storedPassword = $this->getUsersPassword($username);
             if (password_verify($password, $storedPassword)) {
                 if (preg_match($checkPassword, $newPassword)) {
-
-                    $stmt = "UPDATE users SET password = " . $newPassword . " WHERE id =" . $username . ";";
-
+                    $stmt = "UPDATE users SET password = $newPassword  WHERE id = $username;";
                     // Execute the update statement
                     try {
                         //code...
                         $SendDB = $this->DBConnect->prepare($stmt);
                         $SendDB->execute();
                         if ($SendDB->rowCount() > 0) {
-                             $this->responseText['UpdatePassword'] = "Password was updated successfully";
+                            $this->responseText['UpdatePassword'] = "Password was updated successfully";
                         } else {
                             $this->responseText['UpdatePassword'] = "No user found with the specified ID.";
                         }
@@ -307,8 +332,10 @@ class DBaccess
     public function closeConnection()
     {
         if ($this->DBConnect->close()) {
+            $this->responseText['closeConnection'] = 'connection closed';
             return true;
         } else {
+            $this->responseText['closeConnection'] = 'connection not closed';
             return false;
         }
     }
@@ -319,5 +346,14 @@ class DBaccess
     public function printDB()
     {
         print_r($this->DBConnect);
+    }
+    /**
+     * turns response text into a json string and then returns
+     *
+     * @return string
+     */
+    function returnResponse(): string
+    {
+        return json_encode($this->responseText);
     }
 }
