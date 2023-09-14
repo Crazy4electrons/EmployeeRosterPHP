@@ -4,8 +4,6 @@ class DBaccess
     /**
      * This class can be used with js for dynamically update web content and as well
      * as with php to confirm host access only and change host acces acordingly
-     * @param mixed $Password -> Please use HashPassGen($password) with php to 
-     * generate a stong hash file to save Passwords on DB 
      * when  object is started Hostname,Database,user_for_database,and Pass_for_user
      * otherwise object will initialise with dafault and cant 
      * be change unless you call the _destruct method
@@ -13,10 +11,10 @@ class DBaccess
      */
 
     protected static $isCalled = false;
-    protected $Hostname = 'localhost';
-    protected $Apassword = 'N0@dminP@ss';
+    private $Hostname = 'localhost';
+    private $Apassword = 'N0@dminP@ss';
     private $Database = 'MyFirstDB';
-    public $Ausername = 'Admin';
+    private $Ausername = 'Admin';
     public $tableName = 'userAdmins';
     public $DBConnect;
     public $responseText;
@@ -38,29 +36,11 @@ class DBaccess
          * if you use call_destruct() methode
          */
         if (!self::$isCalled) {
-            $this->Ausername = $options['Ausername'] ??;
-            foreach ($options as $key => $value) {
-                if ($value != null) {
-                    switch ($key) {
-                        case 'Ausername':
-                            $this->Ausername = $value;
-                            break;
-                        case 'Apassuser':
-                            $this->Apassword = $value;
-                            break;
-                        case 'Hostname':
-                            $this->Hostname = $value;
-                            break;
-                        case 'Database':
-                            $this->Database = $value;
-                            break;
-                    }
-                }
-            }
-            if ($userNameTable != null) {
-                $this->tableName = $userNameTable;
-            }
-
+            $this->Ausername = ($options['Ausername'] == null) ? $this->Ausername : $options['Ausername'];
+            $this->Hostname = ($options['Hostname'] == null) ? $this->Ausername : $options['Ausername'];
+            $this->Apassword = ($options['Apassuser'] == null) ? $this->Ausername : $options['Ausername'];
+            $this->Database = ($options['Database'] == null) ? $this->Ausername : $options['Ausername'];
+            $this->tableName = ($userNameTable == null) ? $this->tableName : $userNameTable;
             $this->initialize();
             self::$isCalled = true;
             $this->responseText['initialize'] = true;
@@ -126,14 +106,15 @@ class DBaccess
         if ($this->userExists($username)) {
             $storedPassword = $this->getUsersPassword($username);
             if (password_verify($password, $storedPassword)) {
-                $authenticated = true;
+                $this->responseText['authenticated'] = "Authenticated";
+                return true;
             } else {
-                $authenticated = false;
+                $this->responseText['authenticated'] = "Password not verified";
             }
         } else {
-            $authenticated = false;
+            $this->responseText['authenticated'] = "User does not exist!";
         }
-        return $authenticated;
+        return false;
     }
 
     /**
@@ -217,7 +198,7 @@ class DBaccess
             } else {
                 $this->responseText['createUser'] = "user password is not secure enough";
             }
-        }else {
+        } else {
             $this->responseText['createUser'] = "username is must contain alphanumercial";
         }
     }
@@ -334,10 +315,9 @@ class DBaccess
         if ($this->DBConnect->close()) {
             $this->responseText['closeConnection'] = 'connection closed';
             return true;
-        } else {
-            $this->responseText['closeConnection'] = 'connection not closed';
-            return false;
         }
+        $this->responseText['closeConnection'] = 'connection not closed';
+        return false;
     }
 
     /**
@@ -345,7 +325,7 @@ class DBaccess
      */
     public function printDB()
     {
-        print_r($this->DBConnect);
+        return $this->DBConnect;
     }
     /**
      * turns response text into a json string and then returns
