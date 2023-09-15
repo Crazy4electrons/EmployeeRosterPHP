@@ -1,16 +1,35 @@
 <?php
 class Database {
-    private $host;
-    private $username;
-    private $password;
-    private $database;
-    private $connection;
+    protected static $isCalled = false;
+    private $Hostname = 'localhost';
+    private $Apassword = 'N0@dminP@ss';
+    private $Database = 'MyFirstDB';
+    private $Ausername = 'Admin';
+    public $tableName = 'userAdmins';
+    private $DBConnection;
+    public $responseText;
 
-    public function __construct($host, $username, $password, $database) {
-        $this->host = $host;
-        $this->username = $username;
-        $this->password = $password;
-        $this->database = $database;
+    public function __construct(string $userNameTable = null, $options = ['Ausername' => null, 'Apassuser' => null, 'Hostname' => null, '$Database' => null]) {
+         /**
+         * if class is start all values must be set before hand 
+         * otherwise it will use default values and function needs to _destruct 
+         * before values can be modified.
+         * @param __destruct is call at end of the php script or 
+         * if you use call_destruct() methode
+         */
+        if (!self::$isCalled) {
+            $this->Ausername = ($options['Ausername'] == null) ? $this->Ausername : $options['Ausername'];
+            $this->Hostname = ($options['Hostname'] == null) ? $this->Ausername : $options['Ausername'];
+            $this->Apassword = ($options['Apassuser'] == null) ? $this->Ausername : $options['Ausername'];
+            $this->Database = ($options['Database'] == null) ? $this->Ausername : $options['Ausername'];
+            $this->tableName = ($userNameTable == null) ? $this->tableName : $userNameTable;
+            $this->initialize();
+            self::$isCalled = true;
+            $this->responseText['initialize'] = true;
+            return true;
+        }
+        $this->responseText['initialize'] = false;
+        return false;
     }
 
     public function connect() {
@@ -41,6 +60,7 @@ class Database {
         $sql = "DROP TABLE IF EXISTS $tableName";
         return $this->query($sql);
     }
+
 
     // Add more methods for other table operations like insert, update, delete, select, etc.
 }
