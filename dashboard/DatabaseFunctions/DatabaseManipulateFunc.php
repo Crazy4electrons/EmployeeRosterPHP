@@ -9,7 +9,7 @@ class Database
     public $tableName = 'userAdmins';
     private $DBconnection;
     public $responseText;
-//Contruct functions
+    //Contruct functions
     function __construct(string $userNameTable = null, $options = ['Ausername' => null, 'Apassuser' => null, 'Hostname' => null, '$Database' => null])
     {
         /**
@@ -31,7 +31,7 @@ class Database
             self::$isCalled = true;
             $this->responseText['initialize'] = true;
         }
-        $this->createTable($this->tableName, ['user_id INT(255)', 'username VARCHAR(20)', 'pass_hash VARCHAR(255)', 'access_to_ VARCHAR(255)', 'last_login DATETIME', 'geolocation TEXT'], 'user_id', [1],[0],[0,1,]);
+        $this->createTable($this->tableName, ['user_id INT(255)', 'username VARCHAR(20)', 'pass_hash VARCHAR(255)', 'access_to_ VARCHAR(255)', 'last_login DATETIME', 'geolocation TEXT'], 'user_id', [1], [0], [0, 1,]);
         $this->responseText['initialize'] = false;
     }
     /**
@@ -54,9 +54,7 @@ class Database
             self::$isCalled = false;
         }
     }
-
-
-//connection functions
+    //connection functions
     public function connect()
     {
         try {
@@ -83,14 +81,15 @@ class Database
 
     public function query($sql)
     {
-        try{
-            $sendDb= $this->DBconnection->query($sql);
-           }catch(PDOException $error){
-               $this->responseText['QueryError'] = "Error: {$error->getMessage()}" ;
-           }
+        try {
+            $sendDb = $this->DBconnection->query($sql);
+        } catch (PDOException $error) {
+            $this->responseText['QueryError'] = "Error: {$error->getMessage()}";
+            return false;
+        }
         return $sendDb;
     }
-//user Auth functions
+    //user Auth functions
     public function authenticateUser(string $username, string $password)
     {
         if ($this->userExists($username)) {
@@ -129,7 +128,7 @@ class Database
      * @param string $username The username to retrieve the password for.
      * @return string|null Returns the stored password if the user exists, null otherwise.
      */
-    protected function getUsersPassword($username): string
+    protected function getUsersPassword($username): string|bool
     {
 
         $sql = "SELECT password
@@ -161,7 +160,7 @@ class Database
     public function updateUserPassword($username, $password, $newPassword): bool
     {
         $checkPassword = '/^(?=.*[a-zA-Z])(?=.[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
-    
+
         // User existence check
         if ($this->userExists($username)) {
             // Update password
@@ -172,18 +171,13 @@ class Database
                     $derivedPassword = password_hash($newPassword, PASSWORD_BCRYPT, $options);
                     $sql = "UPDATE $this->tableName SET pass_hash = $derivedPassword  WHERE username = $username;";
                     // Execute the update statement
-                    try {
-                        //code...
-                        $SendDB = $this->query($sql);
-                        if ($SendDB->rowCount() > 0) {
-                            $this->responseText['UpdatePassword'] = "Password was updated successfully";
-                            return true;
-                        } else {
-                            $this->responseText['UpdatePassword'] = "No user found with the specified ID.";
-                            return false;
-                        }
-                    } catch (PDOException $e) {
-                        $this->responseText['UpdatePassword']= 'Error: ' . $e->getMessage();
+                    $SendDB = $this->query($sql);
+                    if ($SendDB->rowCount() > 0) {
+                        $this->responseText['UpdatePassword'] = "Password was updated successfully";
+                        $this->SetLastlogin($username);
+                        return true;
+                    } else {
+                        $this->responseText['UpdatePassword'] = "No user found with the specified ID.";
                         return false;
                     }
                 } else {
@@ -199,22 +193,31 @@ class Database
             return false;
         }
     }
-    private function GetUserAccess($username,$password){
-    
-    }
-    private function SetLastlogin($username){
-        $currentDateTime = date('d-m-Y H:i:s');
-
-        $sql ="UPDATE $this->tableName SET last_login = $currentDateTime
-        WHERE usename = $username;";
-        try{
-         $this->query($sql);
-        }catch(PDOException $error){
-            $this->responseText['SetLaslogin'] = "Error: {$error->getMessage()}" ;
-        }
-
-    }
     // user minupulate
+    private function GetUserAccess($username, $password): string|bool
+    {
+        $sql = "SELECT access_level 
+        FROM $this->tableName
+        WHERE username = $username;";
+        $SendDB = $this->query($sql);
+        if ($SendDB->rowCount() > 0) {
+            $row = $SendDB->fetch(PDO::FETCH_ASSOC);
+            $access_level = $row['access_level'];
+            return $access_level;
+        }
+        return false;
+    }
+    private function SetLastlogin($username): bool
+    {
+        $currentDateTime = date('d-m-Y H:i:s');
+        if ($this->userExists($username)) {
+            $sql = "UPDATE $this->tableName SET last_login = $currentDateTime
+        WHERE usename = $username;";
+            $this->query($sql);
+            return true;
+        }
+        return false;
+    }
     /**
      * Creates a new user with the provided username and password.
      *
@@ -230,17 +233,18 @@ class Database
             if (preg_match($checkPassword, $password)) {
                 $options = array('cost' => 10);
                 $derivedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-                $currentDateTime = date('d-m-y h:i:s');
-                $sql = "INSERT INTO $this->tableName  (username,pass_hash,access_to,last_login)
-            VALUES ($username, $derivedPassword,$access,$currentDateTime);";
-            //ON DUPLICATE KEY UPDATE username = $username;";
-            try {
+
+                $sql = "INSERT INTO $this->tableName  (username,pass_hash,access_to)
+            VALUES ($username, $derivedPassword,$access);";
+                //ON DUPLICATE KEY UPDATE username = $username;";
+                try {
                     $sendDB = $this->query($sql);
-                    return $sendDB;
+                    $this->responseText['createUser'] = "User created successfully";
+                    $this->SetLastlogin($username);
+                    return true;
                 } catch (PDOException $error) {
                     $this->responseText['createUser'] = "error: " . $error->getMessage();
                 }
-                $this->responseText['createUser'] = "User created successfully";
             } else {
                 $this->responseText['createUser'] = "user password is not secure enough";
             }
@@ -265,7 +269,14 @@ class Database
             return false;
         }
     }
-//table functions
+    protected function SetUserAccess($username, $accessLevel)
+    {
+        $sql = "UPDATE $this->tableName SET access_level = $accessLevel
+        WHERE username = $username;";
+        if (!$this->query($sql)) {
+        }
+    }
+    //table functions
     /**
      * Creates a table with the provided name, columns, primary key, and unique keys.
      *
