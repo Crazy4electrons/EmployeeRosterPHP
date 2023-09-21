@@ -195,15 +195,25 @@ class Database
         }
     }
     // user minupulate
-    private function GetUserAccess($username, $password): string|bool
+    private function GetUserAccess($username, $password, $IsOtherUser = null, $Return): string|bool
     {
-        $sql = "SELECT access_level 
+        if (!$IsOtherUser) {
+            $sql = "SELECT access_level 
         FROM $this->tableName
         WHERE username = $username;";
-        $SendDB = $this->query($sql);
-        if ($SendDB->rowCount() > 0) {
-            $row = $SendDB->fetch(PDO::FETCH_ASSOC);
-            $access_level = $row['access_level'];
+            $SendDB = $this->query($sql);
+            if ($SendDB->rowCount() > 0) {
+                $row = $SendDB->fetch(PDO::FETCH_ASSOC);
+                $access_level = $row['access_level'];
+            }
+        }else{
+            if($this->authenticateUser($username,$password)){
+                
+            }
+        }
+        if ($Return) {
+            $sql = "SELECT ";
+        } else {
             return $access_level;
         }
         return false;
@@ -272,6 +282,9 @@ class Database
     }
     protected function SetUserAccess($username, $accessLevel)
     {
+        if ($this->GetUserAccess($username)) {
+            # code...
+        }
         $sql = "UPDATE $this->tableName SET access_level = $accessLevel
         WHERE username = $username;";
         if (!$this->query($sql)) {
