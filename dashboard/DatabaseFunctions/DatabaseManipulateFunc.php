@@ -28,11 +28,12 @@ class Database
             $this->Apassword = ($options['Apassuser'] == null) ? $this->Ausername : $options['Ausername'];
             $this->Database = ($options['Database'] == null) ? $this->Ausername : $options['Ausername'];
             $this->tableName = ($userNameTable == null) ? $this->tableName : $userNameTable;
+            $this->createTable($this->tableName, ['user_id INT(255)', 'username VARCHAR(20)', 'pass_hash VARCHAR(255)', 'access_level VARCHAR(255)', 'last_login DATETIME', 'geolocation TEXT'], 'user_id', [1], [0], [0, 1,]);
             self::$isCalled = true;
             $this->responseText['initialize'] = true;
+        } else {
+            $this->responseText['initialize'] = false;
         }
-        $this->createTable($this->tableName, ['user_id INT(255)', 'username VARCHAR(20)', 'pass_hash VARCHAR(255)', 'access_to_ VARCHAR(255)', 'last_login DATETIME', 'geolocation TEXT'], 'user_id', [1], [0], [0, 1,]);
-        $this->responseText['initialize'] = false;
     }
     /**
      * Call function destruct to change access variables in one script
