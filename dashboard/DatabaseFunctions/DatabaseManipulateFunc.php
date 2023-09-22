@@ -6,10 +6,10 @@ class Database
     private $Apassword = 'N0@dminP@ss';
     private $Database = 'MyFirstDB';
     private $Ausername = 'Admin';
-    public $tableName = 'userAdmins';
+    public $tableName = 'userAdmins';   
     private $DBconnection;
     public $responseText;
-    //Contruct functions
+//Contruct functions
     function __construct(string $userNameTable = null, $options = ['Ausername' => null, 'Apassuser' => null, 'Hostname' => null, '$Database' => null])
     {
         /**
@@ -28,12 +28,13 @@ class Database
             $this->Apassword = ($options['Apassuser'] == null) ? $this->Ausername : $options['Ausername'];
             $this->Database = ($options['Database'] == null) ? $this->Ausername : $options['Ausername'];
             $this->tableName = ($userNameTable == null) ? $this->tableName : $userNameTable;
-            $this->createTable($this->tableName, ['user_id INT(255)', 'username VARCHAR(20)', 'pass_hash VARCHAR(255)', 'access_level VARCHAR(255)', 'last_login DATETIME', 'geolocation TEXT'], 'user_id', [1], [0], [0, 1,]);
+            $this->CreateUsersTable();
             self::$isCalled = true;
             $this->responseText['initialize'] = true;
         } else {
             $this->responseText['initialize'] = false;
         }
+    
     }
     /**
      * Call function destruct to change access variables in one script
@@ -55,7 +56,7 @@ class Database
             self::$isCalled = false;
         }
     }
-    //connection functions
+//connection functions
     public function connect()
     {
         try {
@@ -90,7 +91,13 @@ class Database
         }
         return $sendDb;
     }
-    //user Auth functions
+//create user Datable
+    function CreateUsersTable()
+    {
+        $this->createTable($this->tableName, ['user_id INT(255)', 'username VARCHAR(20)','email_address VACHAR(255)', 'pass_hash VARCHAR(255)', 'access_level VARCHAR(255)', 'last_login DATETIME', 'geolocation TEXT'], 'user_id', [1,2], [0], [0, 1,5]);
+        
+    }
+//user Auth functions
     public function authenticateUser(string $username, string $password)
     {
         if ($this->userExists($username)) {
@@ -194,7 +201,7 @@ class Database
             return false;
         }
     }
-    // user minupulate
+// user minupulate
     private function GetUserAccess($username, $password, $IsOtherUser = null, $Return): string|bool
     {
         if (!$IsOtherUser) {
@@ -206,9 +213,8 @@ class Database
                 $row = $SendDB->fetch(PDO::FETCH_ASSOC);
                 $access_level = $row['access_level'];
             }
-        }else{
-            if($this->authenticateUser($username,$password)){
-                
+        } else {
+            if ($this->authenticateUser($username, $password)) {
             }
         }
         if ($Return) {
@@ -218,6 +224,7 @@ class Database
         }
         return false;
     }
+
     private function SetLastlogin($username): bool
     {
         $currentDateTime = date('d-m-Y H:i:s');
@@ -283,7 +290,6 @@ class Database
     protected function SetUserAccess($username, $accessLevel)
     {
         if ($this->GetUserAccess($username)) {
-            # code...
         }
         $sql = "UPDATE $this->tableName SET access_level = $accessLevel
         WHERE username = $username;";
