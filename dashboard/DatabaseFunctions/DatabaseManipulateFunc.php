@@ -140,12 +140,9 @@ class Database
         $sql = "SELECT password
             FROM  $this->tableName
             WHERE username = $username;";
-        try {
-            $SendDB = $this->query($sql);
-        } catch (PDOException $error) {
-            $this->responseText['getpassworduser'] = "error: " . $error->getMessage();
-            return false;
-        }
+
+        $SendDB = $this->query($sql);
+
         if ($SendDB->rowCount() > 0) {
             $row = $SendDB->fetch(PDO::FETCH_ASSOC);
             $password = $row['pass_hash'];
@@ -200,91 +197,80 @@ class Database
         }
     }
     // user minupulate
+
     /**
      * GetUserAcces()
-     * Access_level is a separate Table wchich has a
-     * access_level_id which is a foreign key for User Tables access_level
-     * access_level_name which is a readable name of level
-     * access_contents which has a json file which is contains the levels of access
+     * Access_level_table is a separate Table wchich has a
+     * access_id   which is a foreign key for User Tables 
+     * access_name which is a readable name of level
+     * access_levels which has a json file which is contains the levels of access
      * This method get user access_level_id or access_level_name and returns or
      * it can return the json of level in categories
-     * @param string $IsOtherUser is set 
-     * than @param string $username must have access to that level otherwise an error is thrown
-     * @param string $password is the password to authentic user
-     * @param int $Return has 3 options 0 = return access_id, 1 = return access_level_name, 3 = returns access_contents 
-     * @return string|bool returns string if successfull otherwise returns a false
+     * @param string $username to find the user access_id
+     * @param int $Return has 2 options 0 = return access_name, 1 = returns access_contents default is id if none is given
+     * @param string $accessLevelTable is only used if you have used a custom name for your access_table
+     * @param string $userTable is used only if you have used a custom table name in creation of this class
+     * @return mixed returns string if successfull otherwise returns a false
      * 
      *
      */
-    private function GetUserAccess(string $username, string $password, string $IsOtherUser = null, int $Return,): string|bool
+    function GetUserAccess(string $username, int $Return = null, $accessLevelTable = "access_level_table", $userTable = "user_table")
     {
-        //check if want access to other user
-        if ($IsOtherUser != null) {
-
-            $sql = "SELECT access_level 
-            FROM $this->tableName
+        $accessType = null;
+        //check if want access id
+        $sql = "SELECT access_id
+            FROM $userTable
             WHERE username = $username;";
-            $SendDB = $this->query($sql);
-
-            $sql = "SELECT access_level 
-            FROM $this->tableName
-            WHERE username = $username;";
-            $SendDB = $this->query($sql);
-            
-            
-            
-            
-            if ($SendDB->rowCount() > 0) {
-                $row = $SendDB->fetch(PDO::FETCH_ASSOC);
-                $access_level = $row['access_level'];
-            }
-            if ($SendDB->rowCount() > 0) {
-                $row = $SendDB->fetch(PDO::FETCH_ASSOC);
-                $access_level = $row['access_level'];
-            }
+        $sendDB = $this->query($sql);
+        if ($sendDB->rowCount > 0) {
+            $row = $sendDB->fetch(PDO::FETCH_ASSOC);
+            $access_id = $row['access_id'];
+        }
+        //find access types or name 
+        switch ($Return) {
+            case 0:
+                $accessType = 'access_name';
+                $sql = "SELECT  $accessType;
+                FROM $accessLevelTable
+                WHERE  access_id = $access_id;";
+                break;
+            case 1:
+                $accessType = 'access_levels';
+                $sql = "SELECT $accessType
+                FROM $accessLevelTable
+                WHERE  access_id = $access_id;";
+                break;
         }
 
+        $levelTableName = $this->query($sql);
 
-
-
-        if (!$IsOtherUser) {
-            $sql = "SELECT access_level 
-        FROM $this->tableName
-        WHERE username = $username;";
-            $SendDB = $this->query($sql);
-            if ($SendDB->rowCount() > 0) {
-                $row = $SendDB->fetch(PDO::FETCH_ASSOC);
-                $access_level = $row['access_level'];
+        if ($levelTableName->rowCount() > 0) {
+            $row2 = $levelTableName->fetch(PDO::FETCH_ASSOC);
+            if (is_array(json_decode($row2[$accessType],1))) {
+                return json_decode($row2[$accessType], 1);
+            } else {
+                return $row2[$accessType];
             }
-        } else {
-            if ($this->authenticateUser($username, $password)) {
-            }
-        }
-        if ($Return) {
-            $sql = "SELECT ";
-        } else {
-            return $access_level;
         }
         return false;
     }
-    
-    function hasAccess($accessIdorName,$accessLevelTable = "access_level_table"){
-        $IdorName = nuLL;
-        if(is_int($accessIdorName)){
-            $IdorName = "access_id";
-        }else{
-            $IdorName = "access_name";
+    protected function SetUserAccess($username,$otherUser, $accessLevel, $userTable = "user_table")
+    {
+        $userA_AccessTo = $this->GetUserAccess($username,1);
+        foreach ($userA_AccessTo as $key) {
+            if($key === $accessLevel){
+                $otherUserAccess =  $this->GetUserAccess($otherUser,1);
+            }
         }
-        $sql = "SELECT * 
-        FROM $accessLevelTable
-        WHERE  $IdorName = $accessIdorName;";
-        $sendDB = $this->query($sql);
-        if($sendDB->rowCount > 0){
-            $row = $sendDB->fetch(PDO::FETCH_ASSOC);
-            $levels = json_decode($row['access_levels'],1);
-            
-        }
-    }
+
+
+    //     $AccessTypes2 = $this->GetUserAccess($username, 1);
+    //     foreach ($AccessTypes2 as $key=>$value) {
+    //         $sql = "UPDATE $accessLevelTable SET access_level = $accessLevel
+    //     WHERE username = $username;";
+    //         !$this->query($sql);
+    //     }
+     }
 
     private function SetLastlogin($username): bool
     {
@@ -346,15 +332,6 @@ class Database
         } else {
             $this->responseText['removeUser'] = "User has  been removed";
             return false;
-        }
-    }
-    protected function SetUserAccess($username, $accessLevel)
-    {
-        if ($this->GetUserAccess($username)) {
-        }
-        $sql = "UPDATE $this->tableName SET access_level = $accessLevel
-        WHERE username = $username;";
-        if (!$this->query($sql)) {
         }
     }
     //table functions
