@@ -197,7 +197,6 @@ class Database
         }
     }
     // user minupulate
-
     /**
      * GetUserAcces()
      * Access_level_table is a separate Table wchich has a
@@ -260,6 +259,7 @@ class Database
         foreach ($userA_AccessTo as $key) {
             if($key === $accessLevel){
                 $otherUserAccess =  $this->GetUserAccess($otherUser,1);
+                $otherUserAccess[] = 
             }
         }
 
