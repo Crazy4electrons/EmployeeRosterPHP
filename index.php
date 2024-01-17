@@ -8,7 +8,8 @@ $footerDisplay = "";
 if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     switch ($_GET['redirect']) {
         case 'main':
-            $BodyDisplay = "dashboard/Body/LoginAndRegister/main.php";
+            $title = "Eroster";
+            $BodyDisplay = "dashboard/Erosters/index.php";
             break;
         case 'login':
             $title = "Login";
@@ -38,7 +39,7 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!<![endif]-->
 <html lang="en">
 
 <head>
@@ -58,20 +59,14 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <?php
-    require $headDisplay
-    ?>
-    <!-- include "nav"; -->
-
-    <?php
+    require $headDisplay;
+    //include "nav";
     if ($title == "error") {
         echo $BodyDisplay;
     }else{
         require $BodyDisplay;
     }
-    
-    ?>
-    <?php
-    require $footerDisplay
+    require $footerDisplay;
     ?>
 </body>
 

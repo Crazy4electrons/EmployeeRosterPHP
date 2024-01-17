@@ -1,0 +1,12 @@
+The DataBaseFuntion contains all the functions needed to work with the database.
+    - Establish a connection to DB
+    - store,manipulate and retreive data from database
+    - Manage Users of DataBase
+    - Ability to work with any sort of database 
+    - Re-usable code format and well documented.
+
+
+
+
+
+connectDB-> Auth user -> get access of tables ->get table functions
