@@ -1,0 +1,33 @@
+the database should connect and user should chose which 
+which table to work with or if already assigned to user 
+Structure
+
+> __construct<
+-> get database connection variables
+-> connect to database
+-> First start of the appliction the object should create its own admin
+user database to use as admin for all app access
+-> save connection to variable for access fromother methods
+
+> user functions<
+-> create user
+-> user exists
+-> remove user
+-> edit user
+
+> Security <
+-> authenticate user
+-> update password
+-> user access manipulate
+-> block user
+
+> Table fucntions<
+-> create table
+-> update table
+-> drop table 
+-> alter table
+
+>connection functions<
+-> Estabilish a connection to database
+-> disconnect from database
+-> query database

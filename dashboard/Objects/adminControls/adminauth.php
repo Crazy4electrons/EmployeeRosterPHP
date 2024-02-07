@@ -41,7 +41,7 @@ class AdminAuthForm
      * @param string $password The password.
      * @return bool Returns true if the user is authenticated, false otherwise.
      */
-    function authenticateUser(string $username, string $password): bool
+    protected function authenticateUser(string $username, string $password): bool
     {
         // Regular expressions to validate username and password
         $checkPassword = '/^(?=.*[a-zA-Z])(?=.[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
@@ -103,7 +103,7 @@ class AdminAuthForm
      * @param string $username The username to check.
      * @return bool Returns true if the user exists, false otherwise.
      */
-    function userExists(string $username)
+    protected function userExists(string $username)
     {
         if (isset($this->userNames[$username]) && !empty($this->userNames[$username])) {
             $this->response['UserExists'] = "User does exist: " . $username;
@@ -121,7 +121,7 @@ class AdminAuthForm
      * @param string $newPassword The new password for the user.
      * @return bool Returns true if the password was updated successfully, false otherwise.
      */
-    public function updateUserPassword($username, $password, $newPassword)
+    protected function updateUserPassword($username, $password, $newPassword)
     {
         $checkPassword = '/^(?=.*[a-zA-Z])(?=.[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$/';
 
