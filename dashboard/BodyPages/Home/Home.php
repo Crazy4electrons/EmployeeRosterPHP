@@ -1,23 +1,23 @@
 <div class="Home">
     <div class=" NavtabPage">
-        <div class="NavTabBar">
-            <button class="NavTab" onclick="NavTabPage('Dashboard',0)">
+        <div class="NavTabBars">
+            <button class="NavTabBar" onclick="NavTabPage('Dashboard')">
                 <i class="fa fa-dashboard" aria-hidden="true"></i>
                 Dashboard
             </button>
-            <button class="NavTab" onclick="NavTabPage('Calendar',1)">
+            <button class="NavTabBar" onclick="NavTabPage('Calendar')">
                 <i class="fa-regular fa-calendar"></i>
                 Calender
             </button>
         </div>
-        <div class="Tabs">
-            <div id="Dashboard" class="Tab-item" >
+        <div class="NavTabViews">
+            <div id="Dashboard" class="NavTabView" >
                 <div class="">
 
                 </div>
                 dash
             </div>
-            <div id="Calendar" class="Tab-item">
+            <div id="Calendar" class="NavTabView">
                 calendar
             </div>
         </div>

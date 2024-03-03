@@ -2,7 +2,7 @@
 $title = "";
 $imgTitle = "";
 $headName = "";
-$Mnav = ""; 
+$Mnav = "";
 $BodyDisplay = "";
 $footerDisplay = "";
 $loginStatus = "dashboard/modules/loginStatus/loginstatus.php";
@@ -22,7 +22,7 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
             $imgTitle = "dashboard/images/logo.png";
             $BodyDisplay = "dashboard/BodyPages/LoginAndRegister/register.php";
             break;
-            case 'testpage';
+        case 'testpage';
             $title = "Testpage";
             $BodyDisplay = "dashboard/BodyPages/Testpage.php";
             break;
@@ -38,7 +38,7 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     $BodyDisplay = "dashboard/index.php";
     $headName = "dashboard/headers/MainHeader.php";
     $footerDisplay = "dashboard/Footer/MainFooter.html";
-} 
+}
 
 
 ?>
@@ -58,44 +58,44 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="dashboard/CssFiles/MCss.css">
     <link href=<?php htmlentities($imgTitle) ?> rel="icon" type="image/png" />
 </head>
 
 <body>
-    <!--[if lt IE 7]>
-    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    <header class="flex-row">
-        <?php
-        include $headName;
-        include $loginStatus;
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<header class="header">
+    <?php
+    include $headName;
+    include $loginStatus;
 
-        ?>
-    </header>
-    <nav class="flex-row">
+    ?>
+</header>
+<nav class="MNav">
+    <?php
+    if ($Mnav != null) {
+        include $Mnav;
+    };
+    ?>
+</nav>
+
+    <section class="Body">
         <?php
-        if ($Mnav != null) {
-            include $Mnav;
-        };
-        ?>
-    </nav>
-    <section class="flex-row">
-        <?php
-        if ($title == "error") {
+        if ($title == "error" or null) {
             echo $BodyDisplay;
         } else {
             require $BodyDisplay;
         }
         ?>
     </section>
-    <footer class="flex-collumn">
+    <footer class="footer">
         <?php include $footerDisplay; ?>
     </footer>
+    
+    <link rel="stylesheet" href="dashboard/CssFiles/MCss.css" media="print" onload="this.media='all'">
+    <script src="dashboard/js/FAIcons/all.js" async="false" crossorigin="anonymous"></script>
 </body>
-
-
-<script src="dashboard\js\FAIcons\all.js" async="false" crossorigin="anonymous"></script>
 
 
 </html>
