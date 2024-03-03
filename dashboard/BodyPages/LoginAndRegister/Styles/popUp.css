@@ -1,0 +1,44 @@
+#adminpopup {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(61, 61, 53, 0.458);
+    border-radius: 1em;
+    /* box-shadow: inset 0 0px 7px 3px rgb(30 29 29 / 79%), 0 0px 20px 6px rgb(0 0 0 / 72%); */
+    z-index: 6;
+    width: 80%;
+    height: 80%;
+    margin-top: 5%;
+    transition: transform 0.3s ease-in, opacity 0.8s ease-in, backdrop-filter 3s ease-in;
+}
+.auth{
+    
+}
+
+
+
+
+
+.exitbtn {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+
+.nodisplay {
+    display: none;
+    transform: scale(0%);
+    opacity: 0;
+    backdrop-filter: blur(0);
+}
+
+.visible {
+    transform: scale(100%);
+    opacity: 1;
+    backdrop-filter: blur(1px)
+}
+

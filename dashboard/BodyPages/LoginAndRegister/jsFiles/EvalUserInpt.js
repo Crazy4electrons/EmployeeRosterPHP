@@ -1,6 +1,5 @@
 let EventStarted = false;
-
-function evalinput(userName = ".UserToFilter", userPass = ".PassToFilter", dispBox = ".LogToUser") {
+function EvalUserInpt(userName = ".UserToFilter", userPass = ".PassToFilter", dispBox = ".LogToUser") {
   if (EventStarted) {
     let chckuserPass = document.querySelector(userPass);
     let chckuserName = document.querySelector(userName);
@@ -67,18 +66,8 @@ function evalinput(userName = ".UserToFilter", userPass = ".PassToFilter", dispB
 
   EventStarted = true;
 }
-
-let popup = document.querySelector(".popUp");
-let openBtn = document.querySelector(".openBtn");
-let closeBtn = document.querySelector(".closeBtn");
-
-openBtn.addEventListener("click", function () {
-  popup.classList.remove("nodisplay");
-  popup.classList.add("visible");
-});
-
-closeBtn.addEventListener("click", function () {
-  popup.classList.remove("visible");
-  popup.classList.add("nodisplay");
-});
-
+window.addEventListener("load", function() {
+  EvalUserInpt()
+});  
+  
+  

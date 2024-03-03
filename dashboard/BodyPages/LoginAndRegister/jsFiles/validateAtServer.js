@@ -1,6 +1,7 @@
 function validateAtServer(userName, Password) {
   let adminusername = document.getElementById(userName).value;
   let adminpassword = document.getElementById(Password).value;
+  
   let message = {
     "AdminPassword": adminpassword,
     "AdminUsername": adminusername,
@@ -35,7 +36,7 @@ function validateAtServer(userName, Password) {
               parentchkadmin.submit();
               console.log("true on submit");
             }else{
-              chkadmin.innerHTML = "false on submit: User doesn,t exist";
+              chkadmin.innerHTML = "false on submit: User doesn't exist";
             }
           } else {
             let chkadmin = document.querySelector(".chckadmin")

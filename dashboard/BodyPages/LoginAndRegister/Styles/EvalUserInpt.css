@@ -1,0 +1,7 @@
+.UserLog {
+    width: 50vh;
+    display: none;
+    word-wrap: break-word;
+    border-radius:1em;
+    box-shadow: inset 0px 0px 7px 3px rgba(237, 233, 226, 0.522);
+}

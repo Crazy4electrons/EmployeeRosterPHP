@@ -1,39 +1,47 @@
 <?php
-
 $title = "";
 $imgTitle = "";
-$headDisplay = "";
+$headName = "";
+$Mnav = ""; 
 $BodyDisplay = "";
 $footerDisplay = "";
+$loginStatus = "dashboard/modules/loginStatus/loginstatus.php";
 if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     switch ($_GET['redirect']) {
         case 'main':
-            $title = "Eroster";
-            $BodyDisplay = "dashboard/Erosters/index.php";
+            $title = "EventReady";
+            $BodyDisplay = "dashboard/BodyPages/Home/Home.php";
             break;
         case 'login':
             $title = "Login";
             $imgTitle = "dashboard/images/logo.png";
-            $BodyDisplay = "dashboard/Body/LoginAndRegister/Login.html";
+            $BodyDisplay = "dashboard/BodyPages/LoginAndRegister/Login.php";
             break;
-            case 'register':
-                $title = "Register";
-                $imgTitle = "dashboard/images/logo.png";
-            $BodyDisplay = "dashboard/Body/LoginAndRegister/register.php";
+        case 'register':
+            $title = "Register";
+            $imgTitle = "dashboard/images/logo.png";
+            $BodyDisplay = "dashboard/BodyPages/LoginAndRegister/register.php";
+            break;
+            case 'testpage';
+            $title = "Testpage";
+            $BodyDisplay = "dashboard/BodyPages/Testpage.php";
             break;
         default:
-        $title = "error";
-            $BodyDisplay ="<div class=\"ErrorLogin\">Theres an error in your url <br/> <b style=\"font-size:5em;\">404</b></div>";
+            $title = "error";
+            $BodyDisplay = "<div class=\"ErrorLogin\">Theres an error in your url <br/> <b style=\"font-size:5em;\">404</b></div>";
     }
     $footerDisplay = "dashboard/Footer/MainFooter.html";
-    $headDisplay = "dashboard/headers/Mheader.html";
+    $headName = "dashboard/headers/MainHeader.php";
 } else {
     $title = "Log-in";
     $imgTitle = "dashboard/images/logo.png";
     $BodyDisplay = "dashboard/index.php";
-    $headDisplay = "dashboard/headers/Mheader.html";
+    $headName = "dashboard/headers/MainHeader.php";
     $footerDisplay = "dashboard/Footer/MainFooter.html";
-} ?>
+} 
+
+
+?>
 <!DOCTYPE html>
 <!-- $title = "Login"; -->
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -58,17 +66,36 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <?php
-    require $headDisplay;
-    //include "nav";
-    if ($title == "error") {
-        echo $BodyDisplay;
-    }else{
-        require $BodyDisplay;
-    }
-    require $footerDisplay;
-    ?>
+    <header class="flex-row">
+        <?php
+        include $headName;
+        include $loginStatus;
+
+        ?>
+    </header>
+    <nav class="flex-row">
+        <?php
+        if ($Mnav != null) {
+            include $Mnav;
+        };
+        ?>
+    </nav>
+    <section class="flex-row">
+        <?php
+        if ($title == "error") {
+            echo $BodyDisplay;
+        } else {
+            require $BodyDisplay;
+        }
+        ?>
+    </section>
+    <footer class="flex-collumn">
+        <?php include $footerDisplay; ?>
+    </footer>
 </body>
+
+
+<script src="dashboard\js\FAIcons\all.js" async="false" crossorigin="anonymous"></script>
 
 
 </html>
