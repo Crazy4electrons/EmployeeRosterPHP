@@ -1,0 +1,110 @@
+.NavtabPage {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.NavTabBars {
+    display: flex;
+    flex-flow: row wrap;
+    align-content: start;
+    margin: 0;
+    padding: 0;
+}
+
+.NavTabBar {
+    border: none;
+    border-radius: 1em 1em 0 0;
+    margin: 0px;
+    padding: 0.8em 0.5em;
+    background-color: rgb(153, 231, 231);
+    transition: border 1s ease, transform 0.5s ease,background-image 6s ease;
+}
+
+.ActiveNavTabBar {
+    background-image: linear-gradient(rgb(153, 231, 231)10%, rgb(83, 119, 248));
+    transform: translateY(2px);
+    border: 1px solid black;
+    border-bottom: none;
+}
+
+.NavTabViews {
+    min-width: 100%;
+    min-height: 100%;
+    border: 1px solid black;
+    display: flex;
+    flex-flow: row nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    background-color: rgb(153, 231, 231);
+    padding: 0;
+    margin: 0;
+}
+
+.NavTabView {
+    visibility: hidden;
+    padding: 0;
+    border: 0;
+    width: 0;
+    margin: 0;
+    opacity: 0;
+    border: none;
+    background-color: rgb(83, 119, 248);
+    transition: opacity 0.9s ease, visibility 0.8s ease, width 0.9s ease;
+}
+
+.ActiveNavTabView {
+    visibility: initial;
+    width: 100%;
+    opacity: 1;
+}
+.ExpanNavTabBar{
+    display: none;
+}
+
+@media screen and (max-width:450px) {
+    .NavtabPage {
+        flex-flow: row nowrap;
+        max-width: inherit;
+    }
+
+    .NavTabBars {
+        flex-flow: column nowrap;
+        background-image: linear-gradient(90deg, rgba(86, 194, 43, 0) 10%, rgb(83, 119, 248) 55%);
+    }
+
+    .NavTabBar {
+        padding: 0.3em;
+        background-image: linear-gradient(90deg, rgb(153, 231, 231) 10%, rgb(83, 119, 248));
+        border-radius: 1em;
+        border: 1px solid black;
+        border-left: none;
+        border-bottom: none;
+    }
+    
+    .ActiveNavTabBar {
+        border-radius: 1em 0 0 1em;
+        transform: translateX(1px);
+        border: 1px solid black;
+        border-right: none;
+        border-bottom: none;
+    }
+    .NavTabViews{
+        /* min-width: max-parent; */
+        /* display: flex; */
+        min-width: max-content;
+        border: none;
+        
+    }
+    .NavTabBarTitle{
+        display: none;
+
+    }
+    .ExpanNavTabBar{
+        display: inline;
+        border: none;
+        border-radius: 1em;
+
+    }
+}

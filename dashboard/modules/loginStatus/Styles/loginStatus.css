@@ -1,14 +1,9 @@
 #loginStatus{
     display: flex;
-    flex-direction: row;
-    align-self: flex-end;
-    align-items: flex-end;
-    align-content: flex-end;
-    justify-content: flex-end;
-    justify-items: end;
-    flex-wrap: nowrap;
-    height: 45%;
-    margin-left: 3em;
+    flex-flow: row nowrap;
+    margin-right: 0.5em;
+    /* height: 45%; */
+    margin-left: auto;
 }
 #userIdImg{
     color: white;

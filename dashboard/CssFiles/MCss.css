@@ -23,8 +23,16 @@ body {
     height: 100%;
     min-height: 600px;
 }
+.Body{
+    display: block;
+    min-height: 450px;
+    background-color: rgba(249, 166, 110,1);
+    border-radius: 1em;
+    padding: 1em;
+}
+
 footer{
-    background-image: linear-gradient(rgba(249, 166, 110, 0.988),rgba(255, 255, 255, 0));
+    background-image: linear-gradient(rgba(249, 166, 110,1),rgba(255, 255, 255, 0));
     display: flex;
     flex-flow: row wrap;
     align-items: center;

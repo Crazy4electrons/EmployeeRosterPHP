@@ -9,8 +9,8 @@ $loginStatus = "dashboard/modules/loginStatus/loginstatus.php";
 if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     switch ($_GET['redirect']) {
         case 'main':
-            $title = "EventReady";
-            $BodyDisplay = "dashboard/BodyPages/Home/Home.php";
+            $title = "Main";
+            $BodyDisplay = "dashboard/BodyPages/main/Main.php";
             break;
         case 'login':
             $title = "Login";

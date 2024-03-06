@@ -16,7 +16,7 @@ function setloginimage($username = null, $Image = null)
             return $first_letters_string;
         }
     }else{
-        return "";
+        return $Image;
     }
 }
 ?>
