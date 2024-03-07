@@ -10,7 +10,8 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     switch ($_GET['redirect']) {
         case 'main':
             $title = "Main";
-            $BodyDisplay = "dashboard/BodyPages/main/Main.php";
+            $imgTitle = "dashboard/images/logo.png";
+            $BodyDisplay = "dashboard/BodyPages/Main/Main.php";
             break;
         case 'login':
             $title = "Login";
@@ -52,7 +53,6 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>
         <?php htmlspecialchars($title) ?>
     </title>
@@ -62,23 +62,23 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
 </head>
 
 <body>
-<!--[if lt IE 7]>
+    <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
-<header class="header">
-    <?php
-    include $headName;
-    include $loginStatus;
+    <header class="header">
+        <?php
+        include $headName;
+        include $loginStatus;
 
-    ?>
-</header>
-<nav class="MNav">
-    <?php
-    if ($Mnav != null) {
-        include $Mnav;
-    };
-    ?>
-</nav>
+        ?>
+    </header>
+    <nav class="MNav">
+        <?php
+        if ($Mnav != null) {
+            include $Mnav;
+        };
+        ?>
+    </nav>
 
     <section class="Body">
         <?php
@@ -92,7 +92,7 @@ if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
     <footer class="footer">
         <?php include $footerDisplay; ?>
     </footer>
-    
+
     <link rel="stylesheet" href="dashboard/CssFiles/MCss.css" media="print" onload="this.media='all'">
     <script src="dashboard/js/FAIcons/all.js" async="false" crossorigin="anonymous"></script>
 </body>

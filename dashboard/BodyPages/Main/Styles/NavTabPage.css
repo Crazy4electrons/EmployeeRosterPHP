@@ -19,7 +19,7 @@
     margin: 0px;
     padding: 0.8em 0.5em;
     background-color: rgb(153, 231, 231);
-    transition: border 1s ease, transform 0.5s ease,background-image 6s ease;
+    transition: border 1s ease, transform 0.5s ease, background-image 6s ease;
 }
 
 .ActiveNavTabBar {
@@ -59,8 +59,9 @@
     width: 100%;
     opacity: 1;
 }
-.ExpanNavTabBar{
-    display: none;
+
+.NavTabBarTextBtn {
+    /* display: none; */
 }
 
 @media screen and (max-width:450px) {
@@ -71,7 +72,8 @@
 
     .NavTabBars {
         flex-flow: column nowrap;
-        background-image: linear-gradient(90deg, rgba(86, 194, 43, 0) 10%, rgb(83, 119, 248) 55%);
+        margin-right: 1px;
+        /* background-image: linear-gradient(90deg, rgba(86, 194, 43, 0) 10%, rgb(83, 119, 248) 55%); */
     }
 
     .NavTabBar {
@@ -80,31 +82,42 @@
         border-radius: 1em;
         border: 1px solid black;
         border-left: none;
-        border-bottom: none;
+        /* border-bottom: none; */
     }
-    
+
     .ActiveNavTabBar {
         border-radius: 1em 0 0 1em;
         transform: translateX(1px);
         border: 1px solid black;
         border-right: none;
-        border-bottom: none;
+        /* border-bottom: none; */
+        background-image: none;
+        background-color: rgb(83, 119, 248);
     }
-    .NavTabViews{
-        /* min-width: max-parent; */
-        /* display: flex; */
+
+    .NavTabViews {
         min-width: max-content;
         border: none;
-        
+
     }
-    .NavTabBarTitle{
+
+    .NavTabBarTitle {
         display: none;
 
     }
-    .ExpanNavTabBar{
+    .NavTabBarTitleShow{
+        display: block;
+    }
+    .NavTabBarTextBtn{
         display: inline;
-        border: none;
-        border-radius: 1em;
-
+        border-radius: 25%;
+        background-image: linear-gradient(90deg ,rgb(153, 231, 231)10%, rgb(83, 119, 248));
+        border: 1px solid black;
+        transition: border 1s ease, width 0.5s ease, background-image 6s ease;
+    }
+    .ExpandedNavTabBarTextBtn{
+        width: 100%;
+        background-image: none;
+        background-color: rgb(83, 119, 248);
     }
 }
