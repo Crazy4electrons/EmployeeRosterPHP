@@ -12,8 +12,8 @@
                 <i class="fa-regular fa-calendar"></i>
                 <span class="NavTabBarTitle">Calender</span>
             </button>
-            <button id="NavTabBarTextBtn" title="NavTabBarTextBtn" type="button" class="NavTabBarTextBtn" onclick="BarText">
-                <i class="fa-solid fa-chevron-right"></i>
+            <button id="NavTabBarTextBtn" title="NavTabBarTextBtn" type="button" class="NavTabBarTextBtn" onclick="ExpandNavTabBarText()">
+                <i class="fa-solid fa-chevron-right NavTabBarTextBtnIcon"></i>
             </button>
         </div>
         <div class="NavTabViews">
@@ -66,5 +66,5 @@
         </div>
     </div>
     <link rel="stylesheet" href="dashboard/BodyPages/Main/Styles/NavTabPage.css" media="print" onload="this.media='all'">
-    <script src="dashboard/BodyPages/Main/jsFiles/NavTabPage.js" async="false" crossorigin="anonymous"></script>
     <script src="dashboard/BodyPages/Main/jsFiles/Expandtext.js" async="false" crossorigin="anonymous"></script>
+    <script src="dashboard/BodyPages/Main/jsFiles/NavTabPage.js" async="false" crossorigin="anonymous"></script>

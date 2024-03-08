@@ -1,19 +1,26 @@
-let expand = 0;
-function BarText(epand = 0) {
-    let NavTabBarTitle = document.getElementsByClassName("NavTabBarTitle");
-    let NavTabBarTextBtn = document.getElementsByClassName("NavTabBarTextBtn");
-    if (expand = 0) {
-        // for (let i = 0; i < NavTabBarTitle.length; i++) {
-        NavTabBarTitle[0].style.display = "block" ;
-        //     };
-        expand = 1;
-        //     NavTabBarTextBtn[0].classList.add("ExpandedNavTabBarTextBtn");
-    } else {
-        //     for (let i = 0; i < NavTabBarTitle.length; i++) {
-        NavTabBarTitle[0].style.display = "none";
-        //     };
-        //     NavTabBarTextBtn[0].classList.remove("ExpandedNavTabBarTextBtn");
+let expand = 1;
+function ExpandNavTabBarText() {
+    const NavTabBarTitle = document.getElementsByClassName("NavTabBarTitle");
+    const NavTabBarTextBtn = document.getElementsByClassName("NavTabBarTextBtn");
+    const NavTabBarTextBtnIcon = document.getElementsByClassName("NavTabBarTextBtnIcon");
+    if (expand) {
+        for (let icons = 0; icons < NavTabBarTitle.length; icons++) {
+
+            NavTabBarTitle[icons].classList.add("NavTabBarTitleShow");
+        }
+        NavTabBarTextBtn[0].classList.add("ExpandedNavTabBarTextBtn");
+        NavTabBarTextBtnIcon[0].classList.add("RotatedNavTabBarTextBtnIcon");
+        
         expand = 0;
-    };
+    } else {
+        for (let icons = 0; icons < NavTabBarTitle.length; icons++) {
+            NavTabBarTitle[icons].classList.remove("NavTabBarTitleShow");
+        }
+        NavTabBarTextBtn[0].classList.remove("ExpandedNavTabBarTextBtn");
+        NavTabBarTextBtnIcon[0].classList.remove("RotatedNavTabBarTextBtnIcon");
+        expand = 1;
+    }
+    console.log(expand)
 };
-window.addEventListener("load", BarText);
+
+

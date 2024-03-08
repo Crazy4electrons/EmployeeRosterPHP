@@ -18,13 +18,16 @@
     border-radius: 1em 1em 0 0;
     margin: 0px;
     padding: 0.8em 0.5em;
+    /* background-size: 200%; */
+    background-position: 0;
     background-color: rgb(153, 231, 231);
-    transition: border 1s ease, transform 0.5s ease, background-image 6s ease;
+    transition: border 1s ease, transform 0.5s ease, background-position 2s ease;
 }
 
 .ActiveNavTabBar {
-    background-image: linear-gradient(rgb(153, 231, 231)10%, rgb(83, 119, 248));
-    transform: translateY(2px);
+    background: linear-gradient(rgb(153, 231, 231)10%, rgb(83, 119, 248) 100%)11%;
+    background-position: 100%;
+    transform: translateY(1px);
     border: 1px solid black;
     border-bottom: none;
 }
@@ -58,10 +61,11 @@
     visibility: initial;
     width: 100%;
     opacity: 1;
+    padding: 2px 0px;
 }
 
 .NavTabBarTextBtn {
-    /* display: none; */
+    display: none;
 }
 
 @media screen and (max-width:450px) {
@@ -73,7 +77,6 @@
     .NavTabBars {
         flex-flow: column nowrap;
         margin-right: 1px;
-        /* background-image: linear-gradient(90deg, rgba(86, 194, 43, 0) 10%, rgb(83, 119, 248) 55%); */
     }
 
     .NavTabBar {
@@ -82,7 +85,6 @@
         border-radius: 1em;
         border: 1px solid black;
         border-left: none;
-        /* border-bottom: none; */
     }
 
     .ActiveNavTabBar {
@@ -102,22 +104,47 @@
     }
 
     .NavTabBarTitle {
-        display: none;
+        visibility: hidden;
+        padding: 0;
+        margin: 0;
+        font-size: 0;
+        transition: all 1s ease
+    }
 
+    .NavTabBarTitleShow {
+        visibility: visible;
+        padding: 0;
+        margin: 0;
+        font-size: 100%;
     }
-    .NavTabBarTitleShow{
-        display: block;
-    }
-    .NavTabBarTextBtn{
-        display: inline;
-        border-radius: 25%;
-        background-image: linear-gradient(90deg ,rgb(153, 231, 231)10%, rgb(83, 119, 248));
+
+    .NavTabBarTextBtn {
+        display: flex;
+        color: white;
+        border-radius: 2em;
         border: 1px solid black;
-        transition: border 1s ease, width 0.5s ease, background-image 6s ease;
+        background-color: rgb(83, 119, 248);
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: flex-end;
+        align-items: center;
+        align-self: flex-end;
+        width: min-content;
+        transition: border 1s ease, width 1s ease, transform 1s;
     }
-    .ExpandedNavTabBarTextBtn{
-        width: 100%;
+
+    .ExpandedNavTabBarTextBtn {
         background-image: none;
         background-color: rgb(83, 119, 248);
+        
+    }
+    .NavTabBarTextBtnIcon {
+        transition: transform 1s ease'
+    }
+
+    .RotatedNavTabBarTextBtnIcon {
+        transform: rotateZ(180deg);
+        /* rotate: 180deg;  */
     }
 }
