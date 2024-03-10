@@ -4,7 +4,7 @@
     background-clip: border-box;
     margin: 1px;
     padding: 1px;
-    width: auto;
+    width: 100%;
 }
 header{
     background-image: linear-gradient(rgba(255, 255, 255, 0) 15%,rgba(249, 166, 110, 0.988));
@@ -24,11 +24,12 @@ body {
     min-height: 600px;
 }
 .Body{
-    display: block;
+    /* display: block; */
     min-height: 450px;
     background-color: rgba(249, 166, 110,1);
     border-radius: 1em;
-    padding: 1em;
+    /* padding: 1em; */
+    /* overflow: scroll; */
 }
 
 footer{

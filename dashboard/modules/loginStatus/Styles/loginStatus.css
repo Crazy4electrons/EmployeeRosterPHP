@@ -4,11 +4,25 @@
     margin-right: 0.5em;
     /* height: 45%; */
     margin-left: auto;
+    /* align-content: center; */
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    width: fit-content;
+}
+#loginStatus span{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-wrap: nowrap;
 }
 #userIdImg{
     color: white;
     font-weight: bold;
-    display: flex;
     /* remove first directoy on launch */
     background-image: url(/EmployeeRosterPHP/dashboard/images/BG1.png);
     background-color: aqua;
@@ -18,9 +32,6 @@
     margin-left: 1em;
     width: 2em;
     height: 2em;
-    flex-direction: row;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    justify-items: center;
+    padding: 20px;
+
 }

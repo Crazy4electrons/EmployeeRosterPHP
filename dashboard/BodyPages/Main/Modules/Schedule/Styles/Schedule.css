@@ -1,0 +1,173 @@
+.ScheduleTabPage {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.ScheduleTabBars {
+    display: flex;
+    flex-flow: row nowrap;
+    align-content: flex-end;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    width: fit-content;
+    flex-direction: row;
+}
+
+.ScheduleTabBar {
+    display: flex;
+    flex-flow: row nowrap;
+    border: none;
+    margin: 0;
+    padding: 0.5em .2em;
+    background-color: #99e7e7;
+    transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    -webkit-transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    -moz-transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    -ms-transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    -o-transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    border-radius: 1em 1em 0 0;
+    -webkit-border-radius: 1em 1em 0 0;
+    -moz-border-radius: 1em 1em 0 0;
+    -ms-border-radius: 1em 1em 0 0;
+    -o-border-radius: 1em 1em 0 0;
+    align-content: center;
+    align-items: center;
+    justify-content: flex-start;
+    width: fit-content;
+}
+
+.ActiveScheduleTabBar {
+    background: linear-gradient(rgba(153, 231, 231, 0.958), rgb(83, 119, 248) 100%) 11%;
+    transform: translateY(1px);
+    border: 1px solid #000;
+    border-bottom: none;
+    -webkit-transform: translateY(1px);
+    -moz-transform: translateY(1px);
+    -ms-transform: translateY(1px);
+    -o-transform: translateY(1px);
+}
+
+.ScheduleTabViews {
+    border: 1px solid #000;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    background-color: #99e7e7;
+    padding: 0px;
+    margin: 0px;
+    justify-content: flex-start;
+    width: max-content;
+    border-radius: 0 1em 1em 1em;
+    -webkit-border-radius: 0 1em 1em 1em;
+    -moz-border-radius: 0 1em 1em 1em;
+    -ms-border-radius: 0 1em 1em 1em;
+    -o-border-radius: 0 1em 1em 1em
+}
+
+.ScheduleTabView {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: space-between;
+    visibility: hidden;
+    padding: 0;
+    border: 0;
+    width: 0;
+    margin: 0;
+    opacity: 0;
+    border: none;
+    background-color: #5377f8;
+    transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    -webkit-transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    -moz-transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    -ms-transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    -o-transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    border-radius: 0 1em 1em 1em;
+    -webkit-border-radius: 0 1em 1em 1em;
+    -moz-border-radius: 0 1em 1em 1em;
+    -ms-border-radius: 0 1em 1em 1em;
+    -o-border-radius: 0 1em 1em 1em;
+}
+
+.ActiveScheduleTabView {
+    visibility: initial;
+    width: max-content;
+    opacity: 1;
+    padding: 2px 1em;
+    border-radius: 0 1em 1em 1em;
+    -moz-border-radius: 0 1em 1em 1em;
+    -ms-border-radius: 0 1em 1em 1em;
+    -o-border-radius: 0 1em 1em 1em;
+    -webkit-border-radius: 0 1em 1em 1em;
+}
+.ActiveScheduleTabView div{
+    width: fit-content;
+}
+
+/* Table */
+.ScheduleTabViews {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    background-color: rgba(0, 204, 255, .521);
+    margin: 0em;
+    box-shadow: 0 0 12px 2px #003859;
+    border-radius: 1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    -o-border-radius: 1em;
+    /* max-width: 300px; */
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: flex-start;
+}
+
+.ScheduleTabView {
+    /* width: fit-content; */
+    /* display: flex; */
+    flex-flow: column nowrap;
+    padding: 0;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #f0f8ff;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    align-items: stretch;
+    justify-content: center;
+}
+
+/* .ScheduleTabViewHead {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration-line: underline;
+    text-align: left;
+    -moz-text-decoration-line: underline;
+} */
+
+.ScheduleTabViewHead {
+    background-color: #9cbafa;
+    margin: 0;
+}
+
+.ScheduleTabViewHead th {
+    text-align: left;
+    border: 1px solid
+}
+
+.ScheduleTabViewAddData {
+    text-wrap: wrap;
+    font-size: 0.9em
+}
+
+.ScheduleTabViewAddData td {
+    /* padding: 0.4em; */
+    padding:0.4em 1em;
+    border: 1px solid #2d2d5a;
+}

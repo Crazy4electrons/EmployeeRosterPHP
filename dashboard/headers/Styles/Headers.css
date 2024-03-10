@@ -16,7 +16,7 @@ header h1{
     justify-content: flex-start;
     align-content: center;
     margin-right: auto;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 @media screen and (min-width:450px) {
 }

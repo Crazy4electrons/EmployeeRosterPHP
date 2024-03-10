@@ -18,5 +18,5 @@
 <link rel="stylesheet" href="dashboard/BodyPages/LoginAndRegister/Styles/EvalUserInpt.css" media="print" onload="this.media='all'">
 
 <!-- Js files -->
-<script src="dashboard/BodyPages/LoginAndRegister/jsFiles/validateAtServer.js" async="false" crossorigin="anonymous"></script>
-<script src="dashboard/BodyPages/LoginAndRegister/jsFiles/EvalUserInpt.js" async="false" crossorigin="anonymous"></script>
+<script src="dashboard/BodyPages/LoginAndRegister/jsFiles/validateAtServer.js" async="true" crossorigin="anonymous"></script>
+<script src="dashboard/BodyPages/LoginAndRegister/jsFiles/EvalUserInpt.js" async="true" crossorigin="anonymous"></script>

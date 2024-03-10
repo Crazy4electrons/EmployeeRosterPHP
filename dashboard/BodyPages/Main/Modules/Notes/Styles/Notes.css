@@ -1,0 +1,123 @@
+.NotesTab {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 204, 255, .521);
+    margin: .5em;
+    box-shadow: 0 0 12px 2px #003859;
+    border-radius: 1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    -o-border-radius: 1em;
+    max-width: 300px;
+    align-content: flex-start;
+    padding: .5em;
+    flex-wrap: wrap;
+    flex-direction: row
+}
+
+.ViewNotes {
+    width: fit-content;
+    display: flex;
+    flex-flow: column nowrap
+}
+
+.ViewNotesdisplay {
+    padding: 0;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #f0f8ff
+}
+
+.ViewNotesTitle {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration-line: underline;
+    text-align: left
+}
+
+.ViewNotesdisplayHeader {
+    background-color: #9cbafa;
+    margin: 0;
+    padding: .4em
+}
+
+.ViewNotesdisplayHeader th {
+    text-align: left;
+    border: 1px solid
+}
+
+.ViewNotesdisplayAddData {
+    text-wrap: wrap;
+    font-size: .9em
+}
+
+.ViewNotesdisplayAddData td {
+    padding: 2px .4em;
+    border: 1px solid #2d2d5a
+}
+
+.AddNotesForm {
+    display: flex;
+    flex-flow: column nowrap
+}
+
+.AddNotesFormText {
+    min-height: 100px
+}
+
+.AddNoteFormBtns {
+    display: flex;
+    align-content: center;
+    align-self:flex-end;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+    width: fit-content;
+}
+
+.AddNoteFormBtns button {
+    border-radius: 1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -ms-border-radius: 1em;
+    -o-border-radius: 1em;
+    border: none;
+    margin: 1em 2px 1px auto;
+}
+
+.AddNoteFormBtnAccept {
+    background-color: rgba(195, 195, 255, .863);
+    text-wrap:nowrap;
+    padding: 0.5em;
+    width: fit-content;
+}
+
+.AddNoteFormBtnAccept:hover {
+    background-color: #00d8f7;
+    box-shadow: 0 0 8px 1px grey;
+}
+
+.AddNoteFormBtnCancel {
+    visibility: hidden;
+    padding: 0px;
+    border: 0px;
+    width: 0px;
+    margin: 0px;
+    border: none;
+    /*transform: scaleX(0);
+    */background-color: #f79c9c;
+    transition:all 1s ease,visibility 0.5s ease;
+    -webkit-transition:all 1s ease,visibility 0.5s ease;
+    -moz-transition:all 1s ease,visibility 0.5s ease;
+    -ms-transition:all 1s ease,visibility 0.5s ease;
+    -o-transition:all 1s ease,visibility 0.5s ease;
+}
+.AddNoteFormBtnCancelShow{
+    visibility: visible;
+    /* transform: scaleX(100%); */
+    padding: 0.5em;
+    width: 100%;
+}

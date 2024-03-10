@@ -10,7 +10,7 @@
             </button>
             <button title="Dashd" type="button" class="NavTabBar" onclick="NavTabPage(2)">
                 <i class="fa-regular fa-calendar"></i>
-                <span class="NavTabBarTitle">Calender</span>
+                <span class="NavTabBarTitle">Dashboard</span>
             </button>
             <button id="NavTabBarTextBtn" title="NavTabBarTextBtn" type="button" class="NavTabBarTextBtn" onclick="ExpandNavTabBarText()">
                 <i class="fa-solid fa-chevron-right NavTabBarTextBtnIcon"></i>
@@ -18,14 +18,11 @@
         </div>
         <div class="NavTabViews">
             <div id="Dashboard" class="NavTabView">
-                <div class="">
+                <?php
+                include "./dashboard/BodyPages/Main/Modules/Notes/Notes.php";
+                include "./dashboard/BodyPages/Main/Modules/Schedule/Schedule.php";
+                ?>
 
-                    dash
-                </div>
-                <div class="">
-
-                    dash
-                </div>
                 <div class="">
 
                     dash
@@ -66,5 +63,5 @@
         </div>
     </div>
     <link rel="stylesheet" href="dashboard/BodyPages/Main/Styles/NavTabPage.css" media="print" onload="this.media='all'">
-    <script src="dashboard/BodyPages/Main/jsFiles/Expandtext.js" async="false" crossorigin="anonymous"></script>
-    <script src="dashboard/BodyPages/Main/jsFiles/NavTabPage.js" async="false" crossorigin="anonymous"></script>
+    <script src="dashboard/BodyPages/Main/jsFiles/Expandtext.js" async="true" crossorigin="anonymous"></script>
+    <script src="dashboard/BodyPages/Main/jsFiles/NavTabPage.js" async="true" crossorigin="anonymous"></script>

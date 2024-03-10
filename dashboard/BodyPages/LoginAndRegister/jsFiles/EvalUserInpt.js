@@ -7,7 +7,6 @@ function EvalUserInpt(userName = ".UserToFilter", userPass = ".PassToFilter", di
     chckuserName.removeEventListener("input", checkUsernameValidity);
     EventStarted = false;
   }
-
   let displayout = document.querySelector(dispBox);
   displayout.style.display ="none"
   let displayoutValidPass = null;
@@ -66,8 +65,8 @@ function EvalUserInpt(userName = ".UserToFilter", userPass = ".PassToFilter", di
 
   EventStarted = true;
 }
-window.addEventListener("load", function() {
-  EvalUserInpt()
-});  
+window.addEventListener("load",
+EvalUserInpt()
+);  
   
   

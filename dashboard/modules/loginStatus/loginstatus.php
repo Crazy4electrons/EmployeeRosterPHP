@@ -15,7 +15,7 @@ function setloginimage($username = null, $Image = null)
 
             return $first_letters_string;
         }
-    }else{
+    } else {
         return $Image;
     }
 }
@@ -23,10 +23,10 @@ function setloginimage($username = null, $Image = null)
 
 
 <div id="loginStatus" class="">
-    <p>
-        <?php echo (($username == null) ? 'Hi, sign in here. <i class="fa fa-smile-o" aria-hidden="true"></i>' : $username)  ?>
-    </p>
+
+    <span><?php echo (($username == null) ? 'Hi, sign in here. <i class="fa fa-smile-o" aria-hidden="true"></i>' : $username)  ?></span>
+
     <span id="userIdImg"> <?php echo setloginimage($username) ?> </span>
-<link rel="stylesheet" href="dashboard/modules/loginStatus/Styles/loginStatus.css" media="print" onload="this.media='all'">
 
 </div>
+<link rel="stylesheet" href="dashboard/modules/loginStatus/Styles/loginStatus.css" media="print" onload="this.media='all'">
