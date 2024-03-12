@@ -21,6 +21,7 @@
                 <?php
                 include "./dashboard/BodyPages/Main/Modules/Notes/Notes.php";
                 include "./dashboard/BodyPages/Main/Modules/Schedule/Schedule.php";
+                include "./dashboard/BodyPages/Main/Modules/Charts/Charts.php";
                 ?>
 
                 <div class="">

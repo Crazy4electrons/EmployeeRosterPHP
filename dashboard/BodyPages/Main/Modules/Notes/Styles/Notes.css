@@ -13,13 +13,12 @@
     -o-border-radius: 1em;
     max-width: 300px;
     align-content: flex-start;
-    padding: .5em;
+    padding: 0.5em;
     flex-wrap: wrap;
     flex-direction: row
 }
 
 .ViewNotes {
-    width: fit-content;
     display: flex;
     flex-flow: column nowrap
 }
@@ -75,15 +74,15 @@
     flex-wrap: nowrap;
     justify-content: flex-end;
     align-items: flex-start;
-    width: fit-content;
+    width: auto;
 }
 
 .AddNoteFormBtns button {
-    border-radius: 1em;
     -webkit-border-radius: 1em;
     -moz-border-radius: 1em;
     -ms-border-radius: 1em;
     -o-border-radius: 1em;
+    border-radius: 1em;
     border: none;
     margin: 1em 2px 1px auto;
 }
@@ -92,7 +91,7 @@
     background-color: rgba(195, 195, 255, .863);
     text-wrap:nowrap;
     padding: 0.5em;
-    width: fit-content;
+    width: auto;
 }
 
 .AddNoteFormBtnAccept:hover {
@@ -107,17 +106,15 @@
     width: 0px;
     margin: 0px;
     border: none;
-    /*transform: scaleX(0);
-    */background-color: #f79c9c;
-    transition:all 1s ease,visibility 0.5s ease;
+background-color: #f79c9c;
     -webkit-transition:all 1s ease,visibility 0.5s ease;
     -moz-transition:all 1s ease,visibility 0.5s ease;
     -ms-transition:all 1s ease,visibility 0.5s ease;
     -o-transition:all 1s ease,visibility 0.5s ease;
+    transition:all 1s ease,visibility 0.5s ease;
 }
 .AddNoteFormBtnCancelShow{
     visibility: visible;
-    /* transform: scaleX(100%); */
     padding: 0.5em;
     width: 100%;
 }
