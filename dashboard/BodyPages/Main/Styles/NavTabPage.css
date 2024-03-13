@@ -1,18 +1,193 @@
-.NavtabPage{display:flex;flex-flow:column nowrap;align-items:flex-start;justify-content:flex-start}
-.NavTabBars{display:flex;flex-flow:row nowrap;align-content:flex-end;justify-content:flex-end;margin:0;padding:0;width:max-content;flex-direction:row}
-.NavTabBar{display:flex;flex-flow:row nowrap;border:none;margin:0;padding:.5em .2em;background-color:#99e7e7;transition:border 1s ease,transform .5s ease,background-position 2s ease;-webkit-transition:border 1s ease,transform .5s ease,background-position 2s ease;-moz-transition:border 1s ease,transform .5s ease,background-position 2s ease;-ms-transition:border 1s ease,transform .5s ease,background-position 2s ease;-o-transition:border 1s ease,transform .5s ease,background-position 2s ease;border-radius:1em 1em 0 0;-webkit-border-radius:1em 1em 0 0;-moz-border-radius:1em 1em 0 0;-ms-border-radius:1em 1em 0 0;-o-border-radius:1em 1em 0 0;align-content:center;align-items:center;justify-content:flex-start;min-width:max-content}
-.ActiveNavTabBar{background:linear-gradient(rgba(153,231,231,.958),#5377f8 100%) 11%;transform:translateY(1px);border:1px solid #000;border-bottom:none;-webkit-transform:translateY(1px);-moz-transform:translateY(1px);-ms-transform:translateY(1px);-o-transform:translateY(1px)}
-.NavTabViews{border:1px solid #000;display:flex;flex-flow:row wrap;align-content:flex-start;background-color:#99e7e7;padding:0;margin:0;justify-content:flex-start;-webkit-border-radius:0 1em 1em 1em;-moz-border-radius:0 1em 1em 1em;-ms-border-radius:0 1em 1em 1em;-o-border-radius:0 1em 1em 1em;border-radius:0 1em 1em 1em}
-.NavTabView{display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;justify-content:space-around;visibility:hidden;padding:0;border:0;width:0;margin:0;opacity:0;border:none;background-color:#5377f8;transition:opacity .9s ease,visibility .8s ease,width .9s ease;-webkit-transition:opacity .9s ease,visibility .8s ease,width .9s ease;-moz-transition:opacity .9s ease,visibility .8s ease,width .9s ease;-ms-transition:opacity .9s ease,visibility .8s ease,width .9s ease;-o-transition:opacity .9s ease,visibility .8s ease,width .9s ease;border-radius:0 1em 1em 1em;-webkit-border-radius:0 1em 1em 1em;-moz-border-radius:0 1em 1em 1em;-ms-border-radius:0 1em 1em 1em;-o-border-radius:0 1em 1em 1em}
-.ActiveNavTabView{visibility:visible;width:100%;opacity:1;padding:2px 0;border-radius:0 1em 1em 1em;-moz-border-radius:0 1em 1em 1em;-ms-border-radius:0 1em 1em 1em;-o-border-radius:0 1em 1em 1em;-webkit-border-radius:0 1em 1em 1em}
-.NavTabBarTextBtn{visibility:hidden}
-@media screen and (max-width:450px){
-.NavtabPage{flex-flow:row nowrap}
-.NavTabBars{flex-flow:column nowrap;margin-right:1px}
-.NavTabBar{padding:.4em;background-image:linear-gradient(90deg,#99e7e7 10%,#5377f8);border:1px solid #000;border-left:none;display:flex;flex-flow:row nowrap;width:max-content;border-radius:20px;-webkit-border-radius:20px;-moz-border-radius:20px;-ms-border-radius:20px;-o-border-radius:20px}
-.ActiveNavTabBar{border-radius:1em 0 0 1em;transform:translateX(2px);border:1px solid #000;border-right:none;background-image:none;background-color:#5377f8;-webkit-transform:translateX(2px);-moz-transform:translateX(2px);-ms-transform:translateX(2px);-o-transform:translateX(2px)}
-.NavTabBarTitle{visibility:hidden;padding:0;margin:0;font-size:0;transition:all 1s ease}
-.NavTabBarTitleShow{visibility:visible;padding:0;margin:0;font-size:100%}
-.NavTabBarTextBtn{visibility:visible;display:flex;color:#fff;height:fit-content;width:max-content;border:1px solid #000;background-color:#35b5ff;align-content:center;align-self:flex-end;width:max-content;height:max-content;border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;transition:rotate 1s ease,border 1s ease,width 1s ease,transform 1s ease,background-color 1s ease;-webkit-transition:rotate 1s ease,border 1s ease,width 1s ease,transform 1s ease,background-color 1s ease;-moz-transition:rotate 1s ease,border 1s ease,width 1s ease,transform 1s ease,background-color 1s ease;-ms-transition:rotate 1s ease,border 1s ease,width 1s ease,transform 1s ease,background-color 1s ease;-o-transition:rotate 1s ease,border 1s ease,width 1s ease,transform 1s ease,background-color 1s ease}
-.ExpandedNavTabBarTextBtn{background-image:none;background-color:#5377f8;rotate:180deg}
+.NavtabPage {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: flex-start
+}
+
+.NavTabBars {
+    display: flex;
+    flex-flow: row nowrap;
+    align-content: flex-end;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    width: max-content;
+    flex-direction: row
+}
+
+.NavTabBar {
+    display: flex;
+    flex-flow: row nowrap;
+    border: none;
+    margin: 0;
+    padding: .5em .2em;
+    background-color: #99e7e7;
+    transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    -webkit-transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    -moz-transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    -ms-transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    -o-transition: border 1s ease, transform .5s ease, background-position 2s ease;
+    border-radius: 1em 1em 0 0;
+    -webkit-border-radius: 1em 1em 0 0;
+    -moz-border-radius: 1em 1em 0 0;
+    -ms-border-radius: 1em 1em 0 0;
+    -o-border-radius: 1em 1em 0 0;
+    align-content: center;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: max-content
+}
+
+.ActiveNavTabBar {
+    background: linear-gradient(rgba(153, 231, 231, .958), #5377f8 100%) 11%;
+    transform: translateY(1px);
+    border: 1px solid #000;
+    border-bottom: none;
+    -webkit-transform: translateY(1px);
+    -moz-transform: translateY(1px);
+    -ms-transform: translateY(1px);
+    -o-transform: translateY(1px)
+}
+
+.NavTabViews {
+    border: 1px solid #000;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    background-color: #99e7e7;
+    padding: 0;
+    margin: 0;
+    justify-content: flex-start;
+    -webkit-border-radius: 0 1em 1em 1em;
+    -moz-border-radius: 0 1em 1em 1em;
+    -ms-border-radius: 0 1em 1em 1em;
+    -o-border-radius: 0 1em 1em 1em;
+    border-radius: 0 1em 1em 1em
+}
+
+.NavTabView {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: space-around;
+    visibility: hidden;
+    padding: 0;
+    border: 0;
+    width: 0;
+    margin: 0;
+    opacity: 0;
+    border: none;
+    background-color: #5377f8;
+    transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    -webkit-transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    -moz-transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    -ms-transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    -o-transition: opacity .9s ease, visibility .8s ease, width .9s ease;
+    border-radius: 0 1em 1em 1em;
+    -webkit-border-radius: 0 1em 1em 1em;
+    -moz-border-radius: 0 1em 1em 1em;
+    -ms-border-radius: 0 1em 1em 1em;
+    -o-border-radius: 0 1em 1em 1em
+}
+
+.ActiveNavTabView {
+    visibility: visible;
+    width: 100%;
+    opacity: 1;
+    padding: 2px 0;
+    border-radius: 0 1em 1em 1em;
+    -moz-border-radius: 0 1em 1em 1em;
+    -ms-border-radius: 0 1em 1em 1em;
+    -o-border-radius: 0 1em 1em 1em;
+    -webkit-border-radius: 0 1em 1em 1em
+}
+
+.NavTabBarTextBtn {
+    visibility: hidden
+}
+
+@media screen and (max-width:450px) {
+    .NavtabPage {
+        flex-flow: row nowrap
+    }
+
+    .NavTabBars {
+        flex-flow: column nowrap;
+        margin-right: 1px
+    }
+
+    .NavTabBar {
+        padding: .4em;
+        background-image: linear-gradient(90deg, #99e7e7 10%, #5377f8);
+        border: 1px solid #000;
+        border-left: none;
+        display: flex;
+        flex-flow: row nowrap;
+        width: max-content;
+        border-radius: 20px;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        -ms-border-radius: 20px;
+        -o-border-radius: 20px
+    }
+
+    .ActiveNavTabBar {
+        border-radius: 1em 0 0 1em;
+        transform: translateX(2px);
+        border: 1px solid #000;
+        border-right: none;
+        background-image: none;
+        background-color: #5377f8;
+        -webkit-transform: translateX(2px);
+        -moz-transform: translateX(2px);
+        -ms-transform: translateX(2px);
+        -o-transform: translateX(2px)
+    }
+
+    .NavTabBarTitle {
+        visibility: hidden;
+        padding: 0;
+        margin: 0;
+        font-size: 0;
+        transition: all 1s ease
+    }
+
+    .NavTabBarTitleShow {
+        visibility: visible;
+        padding: 0;
+        margin: 0;
+        font-size: 100%
+    }
+
+    .NavTabBarTextBtn {
+        visibility: visible;
+        display: flex;
+        color: #fff;
+        width: max-content;
+        border: 1px solid #000;
+        background-color: #35b5ff;
+        align-content: center;
+        align-self: flex-end;
+        width: max-content;
+        height: max-content;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+        transition: rotate 1s ease, border 1s ease, width 1s ease, transform 1s ease, background-color 1s ease;
+        -webkit-transition: rotate 1s ease, border 1s ease, width 1s ease, transform 1s ease, background-color 1s ease;
+        -moz-transition: rotate 1s ease, border 1s ease, width 1s ease, transform 1s ease, background-color 1s ease;
+        -ms-transition: rotate 1s ease, border 1s ease, width 1s ease, transform 1s ease, background-color 1s ease;
+        -o-transition: rotate 1s ease, border 1s ease, width 1s ease, transform 1s ease, background-color 1s ease
+    }
+
+    .ExpandedNavTabBarTextBtn {
+        background-image: none;
+        background-color: #5377f8;
+        rotate: 180deg
+    }
 }
